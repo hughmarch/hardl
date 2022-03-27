@@ -1,0 +1,51 @@
+
+.guess {
+    display: flex;
+}
+
+.tile {
+    width: 100%;
+    margin: 2px;
+    border: 2px solid white;
+}
+
+.tile div {
+    padding-top: 100%;
+    position: relative;
+}
+
+.tile div span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-transform: uppercase;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.tile-light-border {
+    border-color: lightgray;
+}
+
+.tile-dark-border {
+    border-color: gray;
+}
+
+.tile-green {
+    background-color: #68a562;
+    border-color: #68a562;
+    color: white;
+}
+
+.tile-yellow {
+    background-color: #c1ae57;
+    border-color: #c1ae57;
+    color: white;
+}
+
+.tile-gray {
+    background-color: #9d9d9d;
+    border-color: #9d9d9d;
+    color: white;
+}
