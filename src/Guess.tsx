@@ -80,7 +80,7 @@ class Guess extends Component<GuessProps> {
             }
 
             letters.push(
-                <div className={`tile ${border}`}>
+                <div className={`tile ${border}`} key={i}>
                     <div>
                         <span>{letter}</span>
                     </div>

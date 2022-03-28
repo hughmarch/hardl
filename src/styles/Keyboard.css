@@ -1,0 +1,44 @@
+
+/* Center the keyboard with a max-width of 600px and width 95% */
+.keyboard {
+    max-width: 500px;
+    margin: 15px auto 0;
+    width: 95%;
+}
+
+/* Make each row a flexbox */
+.keyboard-row {
+    display: flex;
+    margin-bottom: 6px;
+}
+
+/* Style keys, specify height, margin, and flex */
+.keyboard-row .key {
+    height: 60px;
+    margin: 0 6px 0 0;
+    padding: 0;
+    flex: 1;
+    border: none;
+    color: black;
+    background-color: #cccccc;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 15px;
+    border-radius: 4px;
+}
+
+/* Specify no margin on last key in row */
+.keyboard-row .key:last-of-type {
+    margin-right: 0;
+}
+
+/* Specify flex for wide keys */
+.keyboard-row .key-wide {
+    flex: 1.5;
+    font-size: 12px;
+}
+
+/* Specify flex for spacer */
+.keyboard-row .spacer {
+    flex: 0.5;
+}

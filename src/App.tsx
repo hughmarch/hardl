@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './styles/App.css';
 import Header from "./Header";
 import GameBoard from "./GameBoard";
+import Keyboard from "./Keyboard";
 import {NUM_GUESSES} from "./Constants";
 
 // Placeholder answer until a daily answer can be used
@@ -25,6 +26,25 @@ class App extends Component<{}, AppState> {
         }
     }
 
+    // Tries to add a letter to the guess. If the current guess has fewer letters
+    // than the answer, adds the letter.
+    addLetter = (key: string) => {
+        console.log(`Added ${key}`);
+    }
+
+    // Tries to remove a letter from the guess. If the current guess has at least one
+    // letter, removes the last letter.
+    removeLetter = () => {
+        console.log('Removed key');
+    }
+
+    // Tries to submit a guess. If the current guess is the same length as the answer,
+    // the current guess is submitted and the new current guess is blank, or if all the
+    // guesses have been used, the game is over.
+    submitGuess = () => {
+        console.log('Submitted guess');
+    }
+
     render() {
         return (
             <div className="app-container">
@@ -35,6 +55,10 @@ class App extends Component<{}, AppState> {
                     answer={answer}
                     numGuesses={NUM_GUESSES}
                 />
+                <Keyboard
+                    onKeyPressed={this.addLetter}
+                    onBackKeyPressed={this.removeLetter}
+                    onSubmitKeyPressed={this.submitGuess} />
             </div>
         );
     }
