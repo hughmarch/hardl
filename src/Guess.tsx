@@ -20,35 +20,42 @@ interface GuessProps {
  * feedback to the player.
  */
 class Guess extends Component<GuessProps> {
-    // Gets the positions of letters in the wrong place given a guess and the
-    // answer. Guess and answer must be the same length and only contain
-    // lowercase alphabetical characters.
-    lettersInWrongPlace = (guess: string, answer: string): number[] => {
-        const res: number[] = [];
+    // Compares the guess to the answer similar to Wordle.
+    // Returns: an array of number arrays. compareGuess()[0] is the list of
+    // 0-indexed positions of letters in the guess which are in the answer and
+    // in the right place, and compareGuess()[1] is a similar list of
+    // positions of letters in the guess which are in the answer but in the
+    // wrong place.
+    // Requirements: guess and answer are the same length and only contain
+    // lowercase alphabetical characters
+    compareGuess = (guess: string, answer: string): number[][] => {
+        const res: number[][] = [[], []];
+
+        // Find letters in the right place first. If the letter is repeated
+        // in guess, we want to indicate the letter in the right place.
+        for (let i = 0; i < answer.length; i++) {
+            if (guess[i] === answer[i]) {
+                res[0].push(i);
+                // Take out any letters in the answer that have already
+                // been used
+                answer = answer.substring(0, i) + "-" + answer.substring(i+1);
+            }
+        }
+
         for (let i = 0; i < guess.length; i++) {
             for (let j = 0; j < answer.length; j++) {
                 if (i === j) {
                     continue;
                 }
                 if (guess[i] === answer[j]) {
-                    res.push(i);
+                    res[1].push(i);
+                    // Take out any letters in the answer that have already
+                    // been used
                     answer = answer.substring(0, j) + "-" + answer.substring(j+1);
                 }
             }
         }
-        return res;
-    }
 
-    // Gets the positions of letters in the right place given a guess and the
-    // answer. Guess and answer must be the same length and only contain
-    // lowercase alphabetical characters.
-    lettersInRightPlace = (guess: string, answer: string): number[] => {
-        const res: number[] = []
-        for (let i = 0; i < answer.length; i++) {
-            if (guess[i] === answer[i]) {
-                res.push(i);
-            }
-        }
         return res;
     }
 
@@ -57,10 +64,9 @@ class Guess extends Component<GuessProps> {
         let rightLetters: any = <span>•</span>;
         let wrongLetters: any = <span>•</span>;
         if (this.props.submitted) {
-            const right = this.lettersInRightPlace(this.props.guess, this.props.answer);
-            const wrong = this.lettersInWrongPlace(this.props.guess, this.props.answer);
-            rightLetters = <span>{right.length}</span>;
-            wrongLetters = <span>{wrong.length}</span>;
+            const feedback = this.compareGuess(this.props.guess, this.props.answer);
+            rightLetters = <span>{feedback[0].length}</span>;
+            wrongLetters = <span>{feedback[1].length}</span>;
         }
 
         // Display the letters in the guess. If the guess doesn't have
