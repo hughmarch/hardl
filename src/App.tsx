@@ -25,6 +25,21 @@ class App extends Component<{}, AppState> {
         }
     }
 
+    // Handles keyboard input, calls appropriate methods to update
+    // the state of the game.
+    handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
+        if (event.key === "Enter") {
+            this.submitGuess();
+        } else if (event.key === "Backspace") {
+            this.removeLetter();
+        } else if (event.key.length === 1) {
+            const key: string = event.key.toLowerCase();
+            if (key.match("[a-z]")) {
+                this.addLetter(key);
+            }
+        }
+    }
+
     // Tries to add a letter to the guess. If the current guess has fewer letters
     // than the answer, adds the letter.
     addLetter = (key: string) => {
@@ -60,7 +75,7 @@ class App extends Component<{}, AppState> {
 
     render() {
         return (
-            <div className="app-container">
+            <div className="app-container" onKeyDown={this.handleKeyPress} tabIndex={0}>
                 <Header />
                 <GameBoard
                     submittedGuesses={this.state.submittedGuesses}
