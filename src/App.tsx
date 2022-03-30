@@ -20,29 +20,42 @@ class App extends Component<{}, AppState> {
     constructor(props: any) {
         super(props);
         this.state = {
-            // Placeholder guesses until player input is implemented
-            submittedGuesses: ["tears", "chant", "stone"],
-            currentGuess: "pro"
+            submittedGuesses: [],
+            currentGuess: ""
         }
     }
 
     // Tries to add a letter to the guess. If the current guess has fewer letters
     // than the answer, adds the letter.
     addLetter = (key: string) => {
-        console.log(`Added ${key}`);
+        if (this.state.currentGuess.length < answer.length) {
+            this.setState({
+                currentGuess: this.state.currentGuess + key
+            });
+        }
     }
 
     // Tries to remove a letter from the guess. If the current guess has at least one
     // letter, removes the last letter.
     removeLetter = () => {
-        console.log('Removed key');
+        if (this.state.currentGuess.length > 0) {
+            this.setState({
+                currentGuess: this.state.currentGuess
+                    .substring(0, this.state.currentGuess.length - 1)
+            })
+        }
     }
 
     // Tries to submit a guess. If the current guess is the same length as the answer,
     // the current guess is submitted and the new current guess is blank, or if all the
     // guesses have been used, the game is over.
     submitGuess = () => {
-        console.log('Submitted guess');
+        if (this.state.currentGuess.length === answer.length) {
+            this.setState({
+                submittedGuesses: [...this.state.submittedGuesses, this.state.currentGuess],
+                currentGuess: ""
+            })
+        }
     }
 
     render() {
