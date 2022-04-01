@@ -10,6 +10,9 @@ interface GameBoardProps {
     answer: string;             // The word the player is trying to guess
     numGuesses: number          // The number of guesses the player can make
                                 // before losing.
+    revealed: boolean;          // If true, it will be revealed whether each
+                                // letter is in the right place, wrong place,
+                                // or not in the answer for all guesses.
 }
 
 /**
@@ -34,7 +37,8 @@ class GameBoard extends Component<GameBoardProps> {
 
             guesses.push(
                 <Guess answer={this.props.answer}   guess={guess}
-                       submitted={submitted}        key={i} />
+                       submitted={submitted}        key={i}
+                       revealed={this.props.revealed} />
             )
         }
 

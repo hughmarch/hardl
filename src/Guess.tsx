@@ -11,6 +11,10 @@ interface GuessProps {
     submitted: boolean; // Whether this guess has been submitted.
                         // Feedback will be provided for submitted
                         // guesses.
+    revealed: boolean;  // If true, it will be revealed whether each
+                        // letter is in the right place, wrong place,
+                        // or not in the answer. If true, submitted
+                        // should also be true.
 }
 
 /**
@@ -61,10 +65,11 @@ class Guess extends Component<GuessProps> {
 
     render() {
         // Give feedback to user if the guess was submitted
+        let feedback: number[][] = [];
         let rightLetters: any = <span>•</span>;
         let wrongLetters: any = <span>•</span>;
         if (this.props.submitted) {
-            const feedback = this.compareGuess(this.props.guess, this.props.answer);
+            feedback = this.compareGuess(this.props.guess, this.props.answer);
             rightLetters = <span>{feedback[0].length}</span>;
             wrongLetters = <span>{feedback[1].length}</span>;
         }
@@ -76,11 +81,19 @@ class Guess extends Component<GuessProps> {
             let letter = "";
             let border = "tile-light-border";
             if (this.props.submitted) {
-                // This guess has been submitted
+                if (this.props.revealed) {
+                    if (feedback[0].includes(i)) {
+                        border = "tile-green";
+                    } else if (feedback[1].includes(i)) {
+                        border = "tile-yellow";
+                    } else {
+                        border = "tile-dark-gray";
+                    }
+                } else {
+                    border = "tile-gray";
+                }
                 letter = this.props.guess[i];
-                border = "tile-gray";
             } else if (i < this.props.guess.length) {
-                // The guess contains a letter in this position
                 letter = this.props.guess[i];
                 border = "tile-dark-border";
             }
