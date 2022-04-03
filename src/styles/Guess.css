@@ -3,6 +3,10 @@
     display: flex;
 }
 
+.tile-spacer {
+    width: 30%;
+}
+
 .tile {
     width: 100%;
     margin: 2px;
