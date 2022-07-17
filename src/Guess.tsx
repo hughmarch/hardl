@@ -1,20 +1,26 @@
 import React, {Component} from 'react';
 import './styles/Guess.css';
+import {DISPLAY_LETTERS} from "./Constants";
 
 interface GuessProps {
-    answer: string;     // The answer the player is trying to guess. Feedback
-                        // will be given according to how guess compares with
-                        // answer.
-    guess: string;      // The player's guess. Must not be longer than
-                        // answer, and must be the same length as answer
-                        // when the guess is submitted.
-    submitted: boolean; // Whether this guess has been submitted.
-                        // Feedback will be provided for submitted
-                        // guesses.
-    revealed: boolean;  // If true, it will be revealed whether each
-                        // letter is in the right place, wrong place,
-                        // or not in the answer. If true, submitted
-                        // should also be true.
+    answer: string;                         // The answer the player is trying to guess. Feedback
+                                            // will be given according to how guess compares with
+                                            // answer.
+    guess: string;                          // The player's guess. Must not be longer than
+                                            // answer, and must be the same length as answer
+                                            // when the guess is submitted.
+    submitted: boolean;                     // Whether this guess has been submitted.
+                                            // Feedback will be provided for submitted
+                                            // guesses.
+    revealed: boolean;                      // If true, it will be revealed whether each
+                                            // letter is in the right place, wrong place,
+                                            // or not in the answer. If true, submitted
+                                            // should also be true.
+    letters: { [key: string]: number[] };   // What the user thinks each letter is: gray, yellow, or
+                                            // green for each place on the board.
+                                            // (0 = don't know, 1 = gray, 2 = yellow, 3 = green)
+    onLetterClicked(letter: string, position: number): void;    // Called when submitted guess's
+                                                                // letter is clicked.
 }
 
 /**
@@ -63,6 +69,12 @@ class Guess extends Component<GuessProps> {
         return res;
     }
 
+    onTileClicked = (letter: string, position: number) => {
+        if (this.props.submitted) {
+            this.props.onLetterClicked(letter, position);
+        }
+    }
+
     render() {
         // Give feedback to user if the guess was submitted
         let feedback: number[][] = [];
@@ -81,6 +93,7 @@ class Guess extends Component<GuessProps> {
             let letter = "";
             let border = "tile-light-border";
             if (this.props.submitted) {
+                letter = this.props.guess[i];
                 if (this.props.revealed) {
                     if (feedback[0].includes(i)) {
                         border = "tile-green";
@@ -90,16 +103,17 @@ class Guess extends Component<GuessProps> {
                         border = "tile-dark-gray";
                     }
                 } else {
-                    border = "tile-gray";
+                    border = DISPLAY_LETTERS[this.props.letters[letter][i]];
                 }
-                letter = this.props.guess[i];
             } else if (i < this.props.guess.length) {
                 letter = this.props.guess[i];
                 border = "tile-dark-border";
             }
 
             letters.push(
-                <div className={`tile ${border}`} key={i}>
+                <div className={`tile ${border}`} key={i} onClick={
+                    () => this.onTileClicked(letter, i)
+                }>
                     <div>
                         <span>{letter}</span>
                     </div>

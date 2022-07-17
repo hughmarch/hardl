@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './styles/Keyboard.css'
+import {DISPLAY_LETTERS} from "./Constants";
 
 // The QWERTY keyboard layout where a list of strings represents a row on the
 // keyboard. SPACER is used as a gap in the keyboard used with flexbox to space
@@ -15,6 +16,9 @@ interface KeyboardProps {
     onKeyPressed(key: string): void;    // Called when a letter key is pressed.
     onBackKeyPressed(): void;           // Called when the back key is pressed.
     onSubmitKeyPressed(): void;         // Called when the submit key is pressed.
+    letters: { [key: string]: number[] };   // What the user thinks each letter is: gray, yellow, or
+                                            // green for each place on the board.
+                                            // (0 = don't know, 1 = gray, 2 = yellow, 3 = green)
 }
 
 /**
@@ -52,7 +56,7 @@ class Keyboard extends Component<KeyboardProps> {
                             className={`key ${
                                 (KEYS[i][j] === "ENTER" || KEYS[i][j] === "BACK")
                                 ? 'key-wide'
-                                : ''}`}
+                                : DISPLAY_LETTERS[Math.max(...this.props.letters[KEYS[i][j]])]}`}
                             // Create an anonymous function that calls this.onKeyPressed
                             // with the proper arguments because onClick doesn't take
                             // arguments.

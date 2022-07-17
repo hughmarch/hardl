@@ -13,6 +13,11 @@ interface GameBoardProps {
     revealed: boolean;          // If true, it will be revealed whether each
                                 // letter is in the right place, wrong place,
                                 // or not in the answer for all guesses.
+    letters: { [key: string]: number[] };   // What the user thinks each letter is: gray, yellow, or
+                                            // green for each place on the board.
+                                            // (0 = don't know, 1 = gray, 2 = yellow, 3 = green)
+    onLetterClicked(letter: string, position: number): void;    // Called when submitted guess's
+                                                                // letter is clicked.
 }
 
 /**
@@ -38,7 +43,9 @@ class GameBoard extends Component<GameBoardProps> {
             guesses.push(
                 <Guess answer={this.props.answer}   guess={guess}
                        submitted={submitted}        key={i}
-                       revealed={this.props.revealed} />
+                       revealed={this.props.revealed}
+                       onLetterClicked={this.props.onLetterClicked}
+                       letters={this.props.letters}/>
             )
         }
 

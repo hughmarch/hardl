@@ -13,7 +13,7 @@
 }
 
 /* Style keys, specify height, margin, and flex */
-.keyboard-row .key {
+.key {
     height: 60px;
     margin: 0 6px 0 0;
     padding: 0;
@@ -25,6 +25,21 @@
     font-weight: 600;
     font-size: 15px;
     border-radius: 4px;
+}
+
+.tile-dark-gray {
+    background-color: #787C7E;
+    color: white;
+}
+
+.tile-green {
+    background-color: #68a562;
+    color: white;
+}
+
+.tile-yellow {
+    background-color: #c1ae57;
+    color: white;
 }
 
 /* Specify no margin on last key in row */

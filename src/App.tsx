@@ -10,21 +10,36 @@ import GameState from "./GameState";
 const answer = "phone";
 
 interface AppState {
-    submittedGuesses: string[]; // All guesses that have previously been submitted
-                                // by the player. Length must not exceed NUM_GUESSES.
-                                // All strings should be the same length as answer.
-    currentGuess: string;       // The current guess, should not exceed the length of
-                                // answer.
-    gameState: GameState;       // The current state of the game.
+    submittedGuesses: string[];             // All guesses that have previously been submitted
+                                            // by the player. Length must not exceed NUM_GUESSES.
+                                            // All strings should be the same length as answer.
+    currentGuess: string;                   // The current guess, should not exceed the length of
+                                            // answer.
+    gameState: GameState;                   // The current state of the game.
+    letters: { [key: string]: number[] };   // What the user thinks each letter is: gray, yellow, or
+                                            // green for each place on the board.
+                                            // (0 = don't know, 1 = gray, 2 = yellow, 3 = green)
 }
 
 class App extends Component<{}, AppState> {
     constructor(props: any) {
         super(props);
+        let initLetters: number[] = [];
+        for (let i = 0; i < answer.length; i++) {
+            initLetters.push(0);
+        }
+
+        let letters: { [key: string]: number[] } = {};
+        for (let i = 0; i < 26; i++) {
+            let letter: string = String.fromCharCode(97 + i);
+            letters[letter] = [...initLetters];
+        }
+
         this.state = {
             submittedGuesses: [],
             currentGuess: "",
-            gameState: GameState.PLAYING
+            gameState: GameState.PLAYING,
+            letters: letters
         }
     }
 
@@ -97,6 +112,24 @@ class App extends Component<{}, AppState> {
         }
     }
 
+    toggleLetter = (letter: string, position: number) => {
+        if (this.state.gameState === GameState.PLAYING) {
+            let letters = this.state.letters;
+            letters[letter][position] += 1;
+            letters[letter][position] %= 4;
+
+            if (letters[letter][position] !== 3) {
+                for (let i = 0; i < letters[letter].length; i++) {
+                    letters[letter][i] = letters[letter][position];
+                }
+            }
+
+            this.setState({
+                letters: letters
+            })
+        }
+    }
+
     render() {
         return (
             <div className="app-container" onKeyDown={this.handleKeyPress} tabIndex={0}>
@@ -108,11 +141,14 @@ class App extends Component<{}, AppState> {
                     numGuesses={NUM_GUESSES}
                     revealed={this.state.gameState === GameState.LOST
                         || this.state.gameState === GameState.WON}
+                    onLetterClicked={this.toggleLetter}
+                    letters={this.state.letters}
                 />
                 <Keyboard
                     onKeyPressed={this.addLetter}
                     onBackKeyPressed={this.removeLetter}
-                    onSubmitKeyPressed={this.submitGuess} />
+                    onSubmitKeyPressed={this.submitGuess}
+                    letters={this.state.letters} />
             </div>
         );
     }
