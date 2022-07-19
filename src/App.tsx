@@ -4,10 +4,12 @@ import Header from "./Header";
 import GameBoard from "./GameBoard";
 import Keyboard from "./Keyboard";
 import {NUM_GUESSES} from "./Constants";
+import {ALL, ANSWERS} from "./WordList";
 import GameState from "./GameState";
 
 // Placeholder answer until a daily answer can be used
-const answer = "phone";
+const day: number = Math.floor(Math.random() * 1000);
+const answer: string = ANSWERS[day];
 
 interface AppState {
     submittedGuesses: string[];             // All guesses that have previously been submitted
@@ -89,26 +91,30 @@ class App extends Component<{}, AppState> {
     submitGuess = () => {
         if (this.state.gameState !== GameState.PLAYING) return;
 
-        if (this.state.currentGuess.length === answer.length) {
-            // What is a better way to write this? Multiple setState calls in same method?
-            if (this.state.currentGuess === answer) {
-                this.setState({
-                    submittedGuesses: [...this.state.submittedGuesses, this.state.currentGuess],
-                    currentGuess: "",
-                    gameState: GameState.WON
-                });
-            } else if (this.state.submittedGuesses.length + 1 === NUM_GUESSES) {
-                this.setState({
-                    submittedGuesses: [...this.state.submittedGuesses, this.state.currentGuess],
-                    currentGuess: "",
-                    gameState: GameState.LOST
-                });
-            } else {
-                this.setState({
-                    submittedGuesses: [...this.state.submittedGuesses, this.state.currentGuess],
-                    currentGuess: ""
-                });
-            }
+        if (this.state.currentGuess.length !== answer.length) return;
+
+        if (!ALL.has(this.state.currentGuess)) return;
+
+        // What is a better way to write this? Multiple setState calls in same method?
+        if (this.state.currentGuess === answer) {
+            this.setState({
+                submittedGuesses: [...this.state.submittedGuesses, this.state.currentGuess],
+                currentGuess: "",
+                gameState: GameState.WON
+            });
+        } else if (this.state.submittedGuesses.length + 1 === NUM_GUESSES) {
+            alert(`The answer was ${answer}`);
+
+            this.setState({
+                submittedGuesses: [...this.state.submittedGuesses, this.state.currentGuess],
+                currentGuess: "",
+                gameState: GameState.LOST
+            });
+        } else {
+            this.setState({
+                submittedGuesses: [...this.state.submittedGuesses, this.state.currentGuess],
+                currentGuess: ""
+            });
         }
     }
 

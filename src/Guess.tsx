@@ -49,6 +49,7 @@ class Guess extends Component<GuessProps> {
                 // Take out any letters in the answer that have already
                 // been used
                 answer = answer.substring(0, i) + "-" + answer.substring(i+1);
+                guess = guess.substring(0, i) + "!" + guess.substring(i+1);
             }
         }
 
@@ -59,9 +60,10 @@ class Guess extends Component<GuessProps> {
                 }
                 if (guess[i] === answer[j]) {
                     res[1].push(i);
-                    // Take out any letters in the answer that have already
+                    // Take out any letters in the answer and guess that have already
                     // been used
                     answer = answer.substring(0, j) + "-" + answer.substring(j+1);
+                    guess = guess.substring(0, i) + "!" + guess.substring(i+1);
                 }
             }
         }
