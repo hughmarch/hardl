@@ -6,10 +6,12 @@ import Keyboard from "./Keyboard";
 import {NUM_GUESSES} from "./Constants";
 import {ALL, ANSWERS} from "./WordList";
 import GameState from "./GameState";
+import TutorialModal from "./TutorialModal";
 
 // Placeholder answer until a daily answer can be used
 const day: number = Math.floor(Math.random() * 1000);
-const answer: string = ANSWERS[day];
+// const answer: string = ANSWERS[day];
+const answer: string = "front";
 
 interface AppState {
     submittedGuesses: string[];             // All guesses that have previously been submitted
@@ -140,6 +142,7 @@ class App extends Component<{}, AppState> {
         return (
             <div className="app-container" onKeyDown={this.handleKeyPress} tabIndex={0}>
                 <Header />
+                <TutorialModal isOpen={true} />
                 <GameBoard
                     submittedGuesses={this.state.submittedGuesses}
                     currentGuess={this.state.currentGuess}
