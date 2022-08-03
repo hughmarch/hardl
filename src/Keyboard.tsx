@@ -13,12 +13,11 @@ const KEYS: string[][] = [
 ]
 
 interface KeyboardProps {
-    onKeyPressed(key: string): void;    // Called when a letter key is pressed.
-    onBackKeyPressed(): void;           // Called when the back key is pressed.
-    onSubmitKeyPressed(): void;         // Called when the submit key is pressed.
-    letters: { [key: string]: number[] };   // What the user thinks each letter is: gray, yellow, or
-                                            // green for each place on the board.
-                                            // (0 = don't know, 1 = gray, 2 = yellow, 3 = green)
+    onKeyPressed(key: string): void;
+    onBackKeyPressed(): void;
+    onSubmitKeyPressed(): void;
+    letterColors: number[][];
+    submittedGuesses: string[];
 }
 
 /**
@@ -37,6 +36,19 @@ class Keyboard extends Component<KeyboardProps> {
     }
 
     render() {
+        const letters: { [key: string]: number } = {};
+        for (let i = 0; i < 26; i++) {
+            const letter: string = String.fromCharCode(i + 97);
+            letters[letter] = 0;
+        }
+
+        for (let i = 0; i < this.props.letterColors.length; i++) {
+            for (let j = 0; j < this.props.letterColors[0].length; j++) {
+                const letter = this.props.submittedGuesses[i][j];
+                letters[letter] = Math.max(letters[letter], this.props.letterColors[i][j]);
+            }
+        }
+
         // Construct the keyboard row by row using KEYS
         const rows: any[] = [];
         for (let i = 0; i < KEYS.length; i++) {
@@ -56,7 +68,7 @@ class Keyboard extends Component<KeyboardProps> {
                             className={`key ${
                                 (KEYS[i][j] === "ENTER" || KEYS[i][j] === "BACK")
                                 ? 'key-wide'
-                                : DISPLAY_LETTERS[Math.max(...this.props.letters[KEYS[i][j]])]}`}
+                                : DISPLAY_LETTERS[letters[KEYS[i][j]]]}`}
                             // Create an anonymous function that calls this.onKeyPressed
                             // with the proper arguments because onClick doesn't take
                             // arguments.

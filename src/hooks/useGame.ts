@@ -4,7 +4,15 @@ import {ALL} from "../WordList";
 import {NUM_GUESSES} from "../Constants";
 import {compareGuess} from "../compareGuess";
 
-interface Game {
+export interface Game {
+    /**
+     * The number of letters in the solution.
+     */
+    numLetters: number;
+    /**
+     * The number of guesses the player has.
+     */
+    numGuesses: number;
     /**
      * A list of submitted guesses.
      */
@@ -58,17 +66,19 @@ const useGame = (solution: string): Game => {
     const [letterColors, setLetterColors] = useState<number[][]>([]);
     const [guessFeedback, setGuessFeedback] = useState<number[][]>([]);
 
-    const guessedLetterColors: { [key: string]: number[] } = {}
-
     const emptyColors: number[] = [];
     for (let i = 0; i < solution.length; i++) {
         emptyColors.push(0);
     }
 
+    const initGuessedLetters: { [key: string]: number[] } = {};
     for (let i = 0; i < 26; i++) {
         let letter: string = String.fromCharCode(97 + i);
-        guessedLetterColors[letter] = [...emptyColors];
+        initGuessedLetters[letter] = [...emptyColors];
     }
+
+    const [guessedLetterColors, setGuessedLetterColors] =
+        useState<{ [key: string]: number[] }>(initGuessedLetters);
 
     const addLetter = (letter: string): void => {
         if (gameState !== GameState.PLAYING) return;
@@ -161,17 +171,22 @@ const useGame = (solution: string): Game => {
             }
         }
 
+        const newLetterColors = [...letterColors];
+
         for (let i = 0; i < letterColors.length; i++) {
             for (let j = 0; j < letterColors[0].length; j++) {
                 const currentLetter = submittedGuesses[i][j];
-                letterColors[i][j] = guessedLetterColors[currentLetter][j];
+                newLetterColors[i][j] = guessedLetterColors[currentLetter][j];
             }
         }
 
-        setLetterColors(letterColors);
+        setLetterColors(newLetterColors);
     }
 
-    return {submittedGuesses, currentGuess, gameState, letterColors, guessFeedback,
+    const numLetters = solution.length;
+    const numGuesses = NUM_GUESSES;
+    return {numLetters, numGuesses, submittedGuesses,
+        currentGuess, gameState, letterColors, guessFeedback,
         addLetter, removeLetter, submitGuess, changeLetterColor};
 }
 
