@@ -1,9 +1,13 @@
+:root {
+    --app-height: 100%;
+}
 
 .app-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: calc(100vh - env(safe-area-inset-bottom));
+    overflow: hidden;
+    height: var(--app-height);
 }
 
 .close {

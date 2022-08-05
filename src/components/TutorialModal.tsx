@@ -1,12 +1,9 @@
-// @ts-ignore
-import Modal from 'react-modal';
-
 import React, {Component} from 'react';
-import '../styles/TutorialModal.css'
+import '../styles/GameModal.css'
 import tutorialNoLetters from '../images/tutorial-no-letters.png';
 import tutorialSomeLetters from '../images/tutorial-some-letters.png';
 import tutorialTapLetters from '../images/tutorial-tap-letters.png';
-import closeIcon from '../images/x.png';
+import GameModal from "./GameModal";
 
 interface TutorialModalProps {
     open: boolean;                      // Whether the tutorial modal is visible
@@ -19,16 +16,9 @@ interface TutorialModalProps {
 class TutorialModal extends Component<TutorialModalProps> {
     render() {
         return (
-            <Modal
-                isOpen={this.props.open}
-                contentLabel={"Tutorial modal"}
-                appElement={document.getElementById('root')}
-                style={{
-                    content: {
-                        maxWidth: '500px',
-                        margin: '0 auto'
-                    }
-                }}
+            <GameModal
+                open={this.props.open}
+                setOpen={this.props.setOpen}
             >
                 <h2>How to play Hardle:</h2>
                 <p>
@@ -61,12 +51,7 @@ class TutorialModal extends Component<TutorialModalProps> {
                     again if you are still unsure.
                 </p>
                 <img src={tutorialTapLetters}  alt={"tapped letters guess"} />
-
-                <img src={closeIcon}
-                     className={"close"}
-                     onClick={() => this.props.setOpen(false)}
-                     alt={"close"}/>
-            </Modal>
+            </GameModal>
         )
     }
 }
