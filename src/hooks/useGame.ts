@@ -3,6 +3,7 @@ import GameState from "../GameState";
 import {ALL} from "../WordList";
 import {NUM_GUESSES} from "../Constants";
 import {compareGuess} from "../compareGuess";
+import ReactDOM from "react-dom";
 
 export interface Game {
     /**
@@ -110,17 +111,19 @@ const useGame = (solution: string): Game => {
 
         const newSubmittedGuesses = [...submittedGuesses, currentGuess];
 
-        if (currentGuess === solution) {
-            setGameState(GameState.WON);
-            revealFeedback(newSubmittedGuesses);
-        } else if (submittedGuesses.length + 1 === NUM_GUESSES) {
-            setGameState(GameState.LOST);
-            revealFeedback(newSubmittedGuesses);
-        }
+        ReactDOM.unstable_batchedUpdates(() => {
+            setSubmittedGuesses(newSubmittedGuesses);
+            setCurrentGuess("");
+            updateFeedback();
 
-        updateFeedback();
-        setSubmittedGuesses(newSubmittedGuesses);
-        setCurrentGuess("");
+            if (currentGuess === solution) {
+                setGameState(GameState.WON);
+                revealFeedback(newSubmittedGuesses);
+            } else if (submittedGuesses.length + 1 === NUM_GUESSES) {
+                setGameState(GameState.LOST);
+                revealFeedback(newSubmittedGuesses);
+            }
+        });
     }
 
     const updateFeedback = () => {
@@ -142,12 +145,12 @@ const useGame = (solution: string): Game => {
         for (const guess of guesses) {
             let colors = [...grayColors];
 
-            const feedback: number[][] = compareGuess(guess, solution);
+            const currentFeedback: number[][] = compareGuess(guess, solution);
 
-            for (const i of feedback[0]) {
+            for (const i of currentFeedback[0]) {
                 colors[i] = 3;
             }
-            for (const i of feedback[1]) {
+            for (const i of currentFeedback[1]) {
                 colors[i] = 2;
             }
 

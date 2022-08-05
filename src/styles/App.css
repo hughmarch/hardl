@@ -5,3 +5,11 @@
     justify-content: space-between;
     height: calc(100vh - env(safe-area-inset-bottom));
 }
+
+.close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 30px;
+    height: 30px;
+}

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Guess from "./Guess";
-import "./styles/GameBoard.css"
+import "../styles/GameBoard.css"
 
 interface GameBoardProps {
     submittedGuesses: string[];

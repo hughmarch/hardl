@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import './styles/Guess.css';
-import {DISPLAY_LETTERS} from "./Constants";
+import '../styles/Guess.css';
+import {DISPLAY_LETTERS} from "../Constants";
 
 interface GuessProps {
     numLetters: number;

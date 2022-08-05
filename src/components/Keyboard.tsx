@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import './styles/Keyboard.css'
-import {DISPLAY_LETTERS} from "./Constants";
+import '../styles/Keyboard.css'
+import {DISPLAY_LETTERS} from "../Constants";
 
 // The QWERTY keyboard layout where a list of strings represents a row on the
 // keyboard. SPACER is used as a gap in the keyboard used with flexbox to space
@@ -42,8 +42,8 @@ class Keyboard extends Component<KeyboardProps> {
             letters[letter] = 0;
         }
 
-        for (let i = 0; i < this.props.letterColors.length; i++) {
-            for (let j = 0; j < this.props.letterColors[0].length; j++) {
+        for (let i = 0; i < this.props.submittedGuesses.length; i++) {
+            for (let j = 0; j < this.props.submittedGuesses[0].length; j++) {
                 const letter = this.props.submittedGuesses[i][j];
                 letters[letter] = Math.max(letters[letter], this.props.letterColors[i][j]);
             }

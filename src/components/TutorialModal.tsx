@@ -2,13 +2,15 @@
 import Modal from 'react-modal';
 
 import React, {Component} from 'react';
-import './styles/TutorialModal.css'
-import tutorialNoLetters from './images/tutorial-no-letters.png';
-import tutorialSomeLetters from './images/tutorial-some-letters.png';
-import tutorialTapLetters from './images/tutorial-tap-letters.png';
+import '../styles/TutorialModal.css'
+import tutorialNoLetters from '../images/tutorial-no-letters.png';
+import tutorialSomeLetters from '../images/tutorial-some-letters.png';
+import tutorialTapLetters from '../images/tutorial-tap-letters.png';
+import closeIcon from '../images/x.png';
 
 interface TutorialModalProps {
-    isOpen: boolean     // Whether the tutorial modal is visible
+    open: boolean;                      // Whether the tutorial modal is visible
+    setOpen: (open: boolean) => void;   // Sets the modal's visibility
 }
 
 /**
@@ -18,8 +20,9 @@ class TutorialModal extends Component<TutorialModalProps> {
     render() {
         return (
             <Modal
-                isOpen={this.props.isOpen}
+                isOpen={this.props.open}
                 contentLabel={"Tutorial modal"}
+                appElement={document.getElementById('root')}
                 style={{
                     content: {
                         maxWidth: '500px',
@@ -58,6 +61,11 @@ class TutorialModal extends Component<TutorialModalProps> {
                     again if you are still unsure.
                 </p>
                 <img src={tutorialTapLetters}  alt={"tapped letters guess"} />
+
+                <img src={closeIcon}
+                     className={"close"}
+                     onClick={() => this.props.setOpen(false)}
+                     alt={"close"}/>
             </Modal>
         )
     }
