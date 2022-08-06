@@ -2,7 +2,6 @@
 import Modal from 'react-modal';
 
 import React, {Component} from 'react';
-import '../styles/GameModal.css'
 import closeIcon from '../images/x.png';
 
 interface GameModalProps {
@@ -28,7 +27,9 @@ class GameModal extends Component<GameModalProps> {
                     }
                 }}
             >
-                {this.props.children}
+                <div className={"modal-content"}>
+                    {this.props.children}
+                </div>
 
                 <img src={closeIcon}
                      className={"close"}

@@ -1,5 +1,14 @@
-h1, h2 {
-  text-align: center
+:root {
+  --color-correct: #33a151;
+  --color-contains: #bfb022;
+  --color-incorrect: #787c7e;
+  --color-unknown: #9d9d9d;
+  --color-background: white;
+  --color-tile-light-border: lightgray;
+  --color-tile-emphasis-border: gray;
+  --color-keyboard-key: #cccccc;
+  --color-text-default: black;
+  --color-text-highlight: white;
 }
 
 body {
@@ -9,6 +18,237 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Fixes content beneath Safari on iPhone's floating address bar */
-  /*padding-bottom: env(safe-area-inset-bottom);*/
+
+  color: var(--color-text-default);
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+/*
+ ------------------------------------ App ------------------------------------
+ */
+
+:root {
+  --app-height: 100%;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  height: var(--app-height);
+}
+
+.close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 30px;
+  height: 30px;
+}
+
+/*
+ ------------------------------------ GameBoard ------------------------------------
+ */
+
+.game-board-container {
+  margin: 0 auto;
+  width: 95%;
+  max-width: 475px;
+  overflow-y: auto;
+}
+
+/*
+ ------------------------------------ Guess ------------------------------------
+ */
+
+.guess {
+  display: flex;
+
+  /* No text highlighting */
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tile-spacer {
+  width: 15%;
+}
+
+.tile {
+  width: 100%;
+  margin: 2px;
+  border: 2px solid var(--color-background);
+}
+
+.tile div {
+  padding-top: 100%;
+  position: relative;
+}
+
+.tile div span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-transform: uppercase;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+@media(min-width: 350px) {
+  .tile div span  {
+    font-size: 24px;
+  }
+}
+
+@media(min-width: 450px) {
+  .tile div span  {
+    font-size: 32px;
+  }
+}
+
+.tile-light-border {
+  border-color: var(--color-tile-light-border);
+}
+
+.tile-emphasis-border {
+  border-color: var(--color-tile-emphasis-border);
+}
+
+.guess .tile-green {
+  background-color: var(--color-correct);
+  border-color: var(--color-correct);
+  color: var(--color-text-highlight);
+}
+
+.guess .tile-yellow {
+  background-color: var(--color-contains);
+  border-color: var(--color-contains);
+  color: var(--color-text-highlight);
+}
+
+.guess .tile-gray {
+  background-color: var(--color-unknown);
+  border-color: var(--color-unknown);
+  color: var(--color-text-highlight);
+}
+
+.guess .tile-dark-gray {
+  background-color: var(--color-incorrect);
+  border-color: var(--color-incorrect);
+  color: var(--color-text-highlight);
+}
+
+/*
+ ------------------------------------ Keyboard ------------------------------------
+ */
+
+/* Center the keyboard with a max-width of 600px and width 95% */
+.keyboard {
+  max-width: 500px;
+  margin: 15px auto 0;
+  width: 95%;
+}
+
+/* Make each row a flexbox */
+.keyboard-row {
+  display: flex;
+  margin-bottom: 6px;
+}
+
+/* Style keys, specify height, margin, and flex */
+.keyboard .key {
+  height: 60px;
+  margin: 0 6px 0 0;
+  padding: 0;
+  flex: 1;
+  border: none;
+  color: var(--color-text-default);
+  background-color: var(--color-keyboard-key);
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: 4px;
+}
+
+.keyboard .tile-dark-gray {
+  background-color: var(--color-incorrect);
+  color: white;
+}
+
+.keyboard .tile-green {
+  background-color: var(--color-correct);
+  color: white;
+}
+
+.keyboard .tile-yellow {
+  background-color: var(--color-contains);
+  color: white;
+}
+
+/* Specify no margin on last key in row */
+.keyboard-row .key:last-of-type {
+  margin-right: 0;
+}
+
+/* Specify flex for wide keys */
+.keyboard-row .key-wide {
+  flex: 1.5;
+  font-size: 12px;
+}
+
+/* Specify flex for spacer */
+.keyboard-row .spacer {
+  flex: 0.5;
+}
+
+/*
+ ------------------------------------ GameModal ------------------------------------
+ */
+
+.modal-content img {
+  width: 80%;
+  display: block;
+  margin: 0 auto;
+  cursor:pointer;
+}
+
+/*
+ ------------------------------------ EndModal ------------------------------------
+ */
+
+.end-modal-content h1 {
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.end-modal-content button {
+  background-color:#44c767;
+  cursor:pointer;
+  color: white;
+  font-size:17px;
+  padding:16px 31px;
+  text-decoration:none;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: 0;
+  display: block;
+  margin: 0 auto;
+}
+.end-modal-content button:hover {
+  background-color:#33a151;
+}
+.end-modal-content button:active {
+  background-color:#33a151;
+  position:relative;
+  top:1px;
 }

@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import '../styles/Guess.css';
 import {DISPLAY_LETTERS} from "../Constants";
 
 interface GuessProps {
@@ -44,7 +43,7 @@ class Guess extends Component<GuessProps> {
                 border = DISPLAY_LETTERS[this.props.letterColors[i]];
             } else if (i < this.props.guess.length) {
                 letter = this.props.guess[i];
-                border = "tile-dark-border";
+                border = "tile-emphasis-border";
             }
 
             letters.push(

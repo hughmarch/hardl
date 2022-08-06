@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import '../styles/Keyboard.css'
 import {DISPLAY_LETTERS} from "../Constants";
 
 // The QWERTY keyboard layout where a list of strings represents a row on the

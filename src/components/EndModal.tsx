@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import '../styles/EndModal.css'
 import GameModal from "./GameModal";
 import {NUM_GUESSES, SHARE_LETTERS} from "../Constants";
 
@@ -42,15 +41,17 @@ class EndModal extends Component<EndModalProps> {
                 open={this.props.open}
                 setOpen={this.props.setOpen}
             >
-                {this.props.won && (
-                    <h2>You won!</h2>
-                )}
-                {!this.props.won && (
-                    <h2>The answer was:</h2>
-                )}
+                <div className={"end-modal-content"}>
+                    {this.props.won && (
+                        <h2>You won!</h2>
+                    )}
+                    {!this.props.won && (
+                        <h2>The answer was:</h2>
+                    )}
 
-                <h1>{this.props.solution.toUpperCase()}</h1>
-                <button onClick={this.share}>Share</button>
+                    <h1>{this.props.solution.toUpperCase()}</h1>
+                    <button onClick={this.share}>Share</button>
+                </div>
             </GameModal>
         )
     }
