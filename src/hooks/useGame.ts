@@ -1,11 +1,17 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import GameState from "../GameState";
-import {ALL} from "../WordList";
+import {ALL, ANSWERS} from "../WordList";
 import {NUM_GUESSES} from "../Constants";
 import {compareGuess} from "../compareGuess";
 import ReactDOM from "react-dom";
+import {useLocalStorage} from "./useLocalStorage";
+import {getStorageValue, setStorageValue} from "../storage";
 
 export interface Game {
+    /**
+     * The solution to the game.
+     */
+    solution: string;
     /**
      * The number of letters in the solution.
      */
@@ -60,12 +66,32 @@ export interface Game {
     changeLetterColor: (guess: number, pos: number) => void;
 }
 
-const useGame = (solution: string): Game => {
-    const [submittedGuesses, setSubmittedGuesses] = useState<string[]>([]);
+const useGame = (day: number): Game => {
+    const [submittedGuesses, setSubmittedGuesses] =
+        useLocalStorage<string[]>("submittedGuesses", []);
+    const [gameState, setGameState] =
+        useLocalStorage<GameState>("gameState", GameState.PLAYING);
+    const [letterColors, setLetterColors] =
+        useLocalStorage<number[][]>("letterColors", []);
+    const [guessFeedback, setGuessFeedback] =
+        useLocalStorage<number[][]>("guessFeedback", []);
+
+    useEffect(() => {
+        const lastPlayed = getStorageValue<number>("day", 0);
+        setStorageValue("day", day);
+        if (day !== lastPlayed) {
+            ReactDOM.unstable_batchedUpdates(() => {
+                setSubmittedGuesses([]);
+                setGameState(GameState.PLAYING);
+                setLetterColors([]);
+                setGuessFeedback([]);
+            });
+        }
+    }, [day, setGameState, setGuessFeedback, setLetterColors, setSubmittedGuesses])
+
     const [currentGuess, setCurrentGuess] = useState<string>("");
-    const [gameState, setGameState] = useState<GameState>(GameState.PLAYING);
-    const [letterColors, setLetterColors] = useState<number[][]>([]);
-    const [guessFeedback, setGuessFeedback] = useState<number[][]>([]);
+
+    const solution = ANSWERS[day];
 
     const emptyColors: number[] = [];
     for (let i = 0; i < solution.length; i++) {
@@ -188,7 +214,7 @@ const useGame = (solution: string): Game => {
 
     const numLetters = solution.length;
     const numGuesses = NUM_GUESSES;
-    return {numLetters, numGuesses, submittedGuesses,
+    return {solution, numLetters, numGuesses, submittedGuesses,
         currentGuess, gameState, letterColors, guessFeedback,
         addLetter, removeLetter, submitGuess, changeLetterColor};
 }

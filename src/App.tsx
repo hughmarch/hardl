@@ -7,18 +7,23 @@ import TutorialModal from "./components/TutorialModal";
 import useGame, {Game} from "./hooks/useGame";
 import GameState from "./GameState";
 import EndModal from "./components/EndModal";
-import ReactDOM from "react-dom";
+import {getStorageValue, setStorageValue} from "./storage";
 
 // Placeholder answer until a daily answer can be used
-const day: number = Math.floor(Math.random() * 1000);
-// const answer: string = ANSWERS[day];
-const answer = "phone";
+// const day: number = Math.floor(Math.random() * 1000);
+const day = 2000;
 
 function App() {
-    const game: Game = useGame(answer);
-    const [tutorial, setTutorial] = useState<boolean>(true);
+    const game: Game = useGame(day);
+    const [tutorial, setTutorial] = useState<boolean>(false);
     const [end, setEnd] = useState<boolean>(false);
-    const [finished, setFinished] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (!tutorial && !getStorageValue<boolean>("visited", false)) {
+            setStorageValue("visited", true);
+            setTutorial(true);
+        }
+    }, [tutorial])
 
     useEffect(() => {
         const appHeight = () => {
@@ -62,21 +67,31 @@ function App() {
     }, [game.removeLetter, game.addLetter, game.submitGuess])
 
     useEffect(() => {
-        if ((game.gameState === GameState.LOST || game.gameState === GameState.WON) && !finished) {
-            setTimeout(() => {
-                ReactDOM.unstable_batchedUpdates(() => {
-                    setEnd(true);
-                    setFinished(true);
-                });
+        let timeout: ReturnType<typeof setTimeout> | null = null;
+        if (game.gameState === GameState.LOST || game.gameState === GameState.WON) {
+            timeout = setTimeout(() => {
+                setEnd(true);
             }, 1000);
+        } else {
+            setEnd(false);
         }
-    }, [game.gameState, finished])
+
+        return () => {
+            if (timeout !== null) {
+                clearTimeout(timeout);
+            }
+        }
+    }, [game.gameState])
 
     return (
         <div className="app-container" tabIndex={0}>
             <Header />
-            <TutorialModal open={tutorial} setOpen={setTutorial}/>
-            <EndModal open={end} setOpen={setEnd} won={game.gameState === GameState.WON} solution={answer} />
+            <TutorialModal open={tutorial} setOpen={setTutorial} />
+            <EndModal   open={end}
+                        setOpen={setEnd}
+                        won={game.gameState === GameState.WON}
+                        solution={game.solution} />
+
             <GameBoard  submittedGuesses={game.submittedGuesses}   currentGuess={game.currentGuess}
                         numLetters={game.numLetters}               numGuesses={game.numGuesses}
                         letterColors={game.letterColors}           guessFeedback={game.guessFeedback}
