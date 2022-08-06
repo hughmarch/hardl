@@ -90,7 +90,9 @@ function App() {
             <EndModal   open={end}
                         setOpen={setEnd}
                         won={game.gameState === GameState.WON}
-                        solution={game.solution} />
+                        solution={game.solution}
+                        letterColors={game.letterColors}
+                        day={day} />
 
             <GameBoard  submittedGuesses={game.submittedGuesses}   currentGuess={game.currentGuess}
                         numLetters={game.numLetters}               numGuesses={game.numGuesses}
