@@ -19,13 +19,13 @@ interface EndModalProps {
 class EndModal extends Component<EndModalProps> {
     getShareText = (): string => {
         const guesses = this.props.won ? this.props.letterColors.length.toString() : "X";
-        let res = `Hardl ${this.props.day} ${guesses}/${NUM_GUESSES}\n\n`;
+        let res = `Hardl ${this.props.day} ${guesses}/${NUM_GUESSES}\n`;
 
         for (let i = 0; i < this.props.letterColors.length; i++) {
+            res += "\n";
             for (let j = 0; j < this.props.letterColors[0].length; j++) {
                 res += SHARE_LETTERS[this.props.letterColors[i][j] - 1];
             }
-            res += "\n";
         }
 
         return res;
