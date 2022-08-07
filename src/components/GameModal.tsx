@@ -11,7 +11,7 @@ interface GameModalProps {
 }
 
 /**
- * The tutorial screen for how to play the game.
+ * An abstract base modal that is styled and has a close icon.
  */
 class GameModal extends Component<GameModalProps> {
     render() {

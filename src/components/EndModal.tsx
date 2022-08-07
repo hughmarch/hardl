@@ -14,7 +14,7 @@ interface EndModalProps {
 }
 
 /**
- * The tutorial screen for how to play the game.
+ * A modal showing the results of the game once it has finished.
  */
 class EndModal extends Component<EndModalProps> {
     getShareText = (): string => {

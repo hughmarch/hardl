@@ -66,6 +66,11 @@ export interface Game {
     changeLetterColor: (guess: number, pos: number) => void;
 }
 
+/**
+ * A model that keeps track of all game logic.
+ * @param day which day's game to play. The state of the game persists if the same
+ * day is used twice in a row.
+ */
 const useGame = (day: number): Game => {
     const [submittedGuesses, setSubmittedGuesses] =
         useLocalStorage<string[]>("submittedGuesses", []);
@@ -85,15 +90,19 @@ const useGame = (day: number): Game => {
         emptyColors.push(0);
     }
 
+    // Construct an initial state for guessed letter colors by mapping each alphabetical
+    // character to [0,0,...,0].
     const initGuessedLetters: { [key: string]: number[] } = {};
     for (let i = 0; i < 26; i++) {
         let letter: string = String.fromCharCode(97 + i);
         initGuessedLetters[letter] = [...emptyColors];
     }
 
+    // A map of alphabetical characters to how the player thinks they appear in the guess.
     const [guessedLetterColors, setGuessedLetterColors] =
         useLocalStorage<{ [key: string]: number[] }>("guessedLetterColors", initGuessedLetters);
 
+    // If a different day's game is being played, reset all persistent game states.
     useEffect(() => {
         const lastPlayed = getStorageValue<number>("day", 0);
         setStorageValue("day", day);
