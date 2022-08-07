@@ -8,3 +8,5 @@ export const DISPLAY_LETTERS: string[] = [
 export const SHARE_LETTERS: string[] = [
     "⬜", "🟨", "🟩"
 ]
+
+export const START_DATE: Date = new Date(2022, 7, 6);

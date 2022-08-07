@@ -83,7 +83,7 @@ const useGame = (day: number): Game => {
 
     const [currentGuess, setCurrentGuess] = useState<string>("");
 
-    const solution = ANSWERS[day];
+    const solution = ANSWERS[day % ANSWERS.length];
 
     const emptyColors: number[] = [];
     for (let i = 0; i < solution.length; i++) {

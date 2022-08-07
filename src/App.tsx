@@ -7,10 +7,11 @@ import useGame, {Game} from "./hooks/useGame";
 import GameState from "./GameState";
 import EndModal from "./components/EndModal";
 import {getStorageValue, setStorageValue} from "./storage";
+import {START_DATE} from "./Constants";
 
-// Placeholder answer until a daily answer can be used
-// const day: number = Math.floor(Math.random() * 1000);
-const day = 1898;
+const date = new Date();
+const time = date.getTime() - START_DATE.getTime();
+const day = Math.floor(time / (1000 * 3600 * 24));
 
 function App() {
     const game: Game = useGame(day);
