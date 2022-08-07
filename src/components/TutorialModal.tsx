@@ -20,7 +20,7 @@ class TutorialModal extends Component<TutorialModalProps> {
                 setOpen={this.props.setOpen}
             >
                 <div className={"tutorial-modal-content"}>
-                    <h2>How to play Hardle:</h2>
+                    <h2>How to play HARDL:</h2>
                     <p>
                         Guess a valid five-letter word. The numbers to the right of your guess will
                         show you how close your guess was to the word.

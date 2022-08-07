@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import GameModal from "./GameModal";
 import {NUM_GUESSES, SHARE_LETTERS} from "../Constants";
+import githubIcon from "../images/github.png";
+import linkedinIcon from "../images/linkedin.png";
 
 interface EndModalProps {
     open: boolean;                      // Whether the tutorial modal is visible
@@ -17,7 +19,7 @@ interface EndModalProps {
 class EndModal extends Component<EndModalProps> {
     getShareText = (): string => {
         const guesses = this.props.won ? this.props.letterColors.length.toString() : "X";
-        let res = `Hardle ${this.props.day} ${guesses}/${NUM_GUESSES}\n\n`;
+        let res = `Hardl ${this.props.day} ${guesses}/${NUM_GUESSES}\n\n`;
 
         for (let i = 0; i < this.props.letterColors.length; i++) {
             for (let j = 0; j < this.props.letterColors[0].length; j++) {
@@ -26,7 +28,6 @@ class EndModal extends Component<EndModalProps> {
             res += "\n";
         }
 
-        res += "\n" + window.location.hostname + window.location.pathname;
         return res;
     }
 
@@ -50,7 +51,17 @@ class EndModal extends Component<EndModalProps> {
                     )}
 
                     <h1>{this.props.solution.toUpperCase()}</h1>
-                    <button onClick={this.share}>Share</button>
+                    <div className={"button-bar"}>
+                        <button onClick={this.share}>Share</button>
+                        <div className={"end-modal-links"}>
+                            <a href={"https://github.com/hughmarch/hardl"}>
+                                <img src={githubIcon} alt={"github"} />
+                            </a>
+                            <a href={"https://www.linkedin.com/in/hugh-march/"}>
+                                <img src={linkedinIcon} alt={"linkedin"} />
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </GameModal>
         )

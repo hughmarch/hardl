@@ -10,7 +10,7 @@ import {getStorageValue, setStorageValue} from "./storage";
 
 // Placeholder answer until a daily answer can be used
 // const day: number = Math.floor(Math.random() * 1000);
-const day = 2000;
+const day = 1898;
 
 function App() {
     const game: Game = useGame(day);
@@ -84,7 +84,7 @@ function App() {
 
     return (
         <div className="app-container" tabIndex={0}>
-            <Header />
+            <Header     setTutorial={setTutorial} />
             <TutorialModal open={tutorial} setOpen={setTutorial} />
             <EndModal   open={end}
                         setOpen={setEnd}

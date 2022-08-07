@@ -23,6 +23,8 @@ body {
 }
 
 h1, h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
   text-align: center;
 }
 
@@ -42,12 +44,39 @@ h1, h2 {
   height: var(--app-height);
 }
 
-.close {
+/*
+ ------------------------------------ Header ------------------------------------
+ */
+
+header {
+  width: 100%;
+  max-width: 475px;
+  margin: 0 auto;
+  position: relative;
+}
+
+header h1 {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 36px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+header img {
+  max-width: 36px;
+  display: block;
   position: absolute;
-  right: 10px;
   top: 10px;
-  width: 30px;
-  height: 30px;
+  right: 10px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+header img:hover,
+header img:focus,
+header img:active {
+  top: 12px;
 }
 
 /*
@@ -152,7 +181,7 @@ h1, h2 {
 
 /* Center the keyboard with a max-width of 600px and width 95% */
 .keyboard {
-  max-width: 500px;
+  max-width: 475px;
   margin: 15px auto 0;
   width: 95%;
 }
@@ -213,16 +242,45 @@ h1, h2 {
  ------------------------------------ GameModal ------------------------------------
  */
 
-.modal-content img {
+.close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity 200ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+}
+
+/*
+ ------------------------------------ TutorialModal ------------------------------------
+ */
+
+.tutorial-modal-content img {
   width: 80%;
   display: block;
   margin: 0 auto;
-  cursor:pointer;
 }
 
 /*
  ------------------------------------ EndModal ------------------------------------
  */
+
+.end-modal-content {
+  padding-top: 10%;
+}
 
 .end-modal-content h1 {
   font-size: 48px;
@@ -242,13 +300,48 @@ h1, h2 {
   text-transform: uppercase;
   border: 0;
   display: block;
-  margin: 0 auto;
 }
-.end-modal-content button:hover {
+.end-modal-content button:hover,
+.end-modal-content button:focus {
   background-color:#33a151;
 }
 .end-modal-content button:active {
   background-color:#33a151;
   position:relative;
   top:1px;
+}
+
+.end-modal-content img {
+  max-width: 48px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.end-modal-content img:hover,
+.end-modal-content img:focus,
+.end-modal-content img:active {
+  position: relative;
+  top: 2px;
+}
+
+.button-bar {
+  width: 80%;
+  display: flex;
+  margin: 0 auto;
+  justify-content: space-between;
+}
+
+.end-modal-links {
+  display: flex;
+  justify-content: right;
+}
+
+@media(max-width: 450px) {
+  .end-modal-links {
+    margin: 10px auto 0;
+  }
+
+  .button-bar {
+    flex-direction: column;
+  }
 }

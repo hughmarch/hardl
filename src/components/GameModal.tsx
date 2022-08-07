@@ -20,6 +20,7 @@ class GameModal extends Component<GameModalProps> {
                 isOpen={this.props.open}
                 contentLabel={"game modal"}
                 appElement={document.getElementById('root')}
+                closeTimeoutMS={200}
                 style={{
                     content: {
                         maxWidth: '500px',
