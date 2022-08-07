@@ -4,6 +4,7 @@
   --color-incorrect: #787c7e;
   --color-unknown: #9d9d9d;
   --color-background: white;
+  --color-tile-light: #f4f4f4;
   --color-tile-light-border: lightgray;
   --color-tile-emphasis-border: gray;
   --color-keyboard-key: #cccccc;
@@ -143,6 +144,10 @@ header img:active {
   }
 }
 
+.tile-light-gray {
+  background-color: var(--color-tile-light);
+}
+
 .tile-light-border {
   border-color: var(--color-tile-light-border);
 }
@@ -279,13 +284,18 @@ header img:active {
  */
 
 .end-modal-content {
-  padding-top: 10%;
+  padding-top: 25%;
 }
 
 .end-modal-content h1 {
   font-size: 48px;
   font-weight: 700;
   letter-spacing: 3px;
+}
+
+.end-modal-content p {
+  text-align: center;
+  margin: 24px 0;
 }
 
 .end-modal-content button {

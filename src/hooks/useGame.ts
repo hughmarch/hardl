@@ -76,19 +76,6 @@ const useGame = (day: number): Game => {
     const [guessFeedback, setGuessFeedback] =
         useLocalStorage<number[][]>("guessFeedback", []);
 
-    useEffect(() => {
-        const lastPlayed = getStorageValue<number>("day", 0);
-        setStorageValue("day", day);
-        if (day !== lastPlayed) {
-            ReactDOM.unstable_batchedUpdates(() => {
-                setSubmittedGuesses([]);
-                setGameState(GameState.PLAYING);
-                setLetterColors([]);
-                setGuessFeedback([]);
-            });
-        }
-    }, [day, setGameState, setGuessFeedback, setLetterColors, setSubmittedGuesses])
-
     const [currentGuess, setCurrentGuess] = useState<string>("");
 
     const solution = ANSWERS[day];
@@ -105,7 +92,21 @@ const useGame = (day: number): Game => {
     }
 
     const [guessedLetterColors, setGuessedLetterColors] =
-        useState<{ [key: string]: number[] }>(initGuessedLetters);
+        useLocalStorage<{ [key: string]: number[] }>("guessedLetterColors", initGuessedLetters);
+
+    useEffect(() => {
+        const lastPlayed = getStorageValue<number>("day", 0);
+        setStorageValue("day", day);
+        if (day !== lastPlayed) {
+            ReactDOM.unstable_batchedUpdates(() => {
+                setSubmittedGuesses([]);
+                setGameState(GameState.PLAYING);
+                setLetterColors([]);
+                setGuessFeedback([]);
+                setGuessedLetterColors(initGuessedLetters);
+            });
+        }
+    }, [day, setGameState, setGuessFeedback, setLetterColors, setSubmittedGuesses, setGuessedLetterColors])
 
     const addLetter = (letter: string): void => {
         if (gameState !== GameState.PLAYING) return;
@@ -191,12 +192,14 @@ const useGame = (day: number): Game => {
 
         const letter = submittedGuesses[guess][pos];
 
-        guessedLetterColors[letter][pos] += 1;
-        guessedLetterColors[letter][pos] %= 4;
+        const newGuessedLetterColors = {...guessedLetterColors};
 
-        if (guessedLetterColors[letter][pos] !== 3) {
-            for (let i = 0; i < guessedLetterColors[letter].length; i++) {
-                guessedLetterColors[letter][i] = guessedLetterColors[letter][pos];
+        newGuessedLetterColors[letter][pos] += 1;
+        newGuessedLetterColors[letter][pos] %= 4;
+
+        if (newGuessedLetterColors[letter][pos] !== 3) {
+            for (let i = 0; i < newGuessedLetterColors[letter].length; i++) {
+                newGuessedLetterColors[letter][i] = newGuessedLetterColors[letter][pos];
             }
         }
 
@@ -209,7 +212,10 @@ const useGame = (day: number): Game => {
             }
         }
 
-        setLetterColors(newLetterColors);
+        ReactDOM.unstable_batchedUpdates(() => {
+            setGuessedLetterColors(newGuessedLetterColors);
+            setLetterColors(newLetterColors);
+        });
     }
 
     const numLetters = solution.length;

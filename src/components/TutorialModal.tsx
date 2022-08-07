@@ -22,18 +22,17 @@ class TutorialModal extends Component<TutorialModalProps> {
                 <div className={"tutorial-modal-content"}>
                     <h2>How to play HARDL:</h2>
                     <p>
-                        Guess a valid five-letter word. The numbers to the right of your guess will
-                        show you how close your guess was to the word.
+                        HARDL is similar to Wordle, but takes inspiration from the game Mastermind
+                        to add a challenging twist.
+                        To start, guess a valid five-letter word. The numbers to the right of your
+                        guess will show you how close your guess was to the word.
                     </p>
                     <p>
-                        The yellow number is the number of letters that are in the answer, but in the
-                        incorrect place. The green number is the number of letters in the answer and in
+                        In yellow is number of letters that are in the answer, but in the
+                        incorrect place. In green is the number of letters in the answer and in
                         the correct place.
                     </p>
-
-                    <p>
-                        Examples:
-                    </p>
+                    <br/>
                     <img src={tutorialSomeLetters}  alt={"guess"} />
                     <p>
                         This guess has 1 letter in the incorrect spot and 1 letter in the correct spot.
@@ -44,13 +43,13 @@ class TutorialModal extends Component<TutorialModalProps> {
                     <p>
                         None of the letters in this guess are in the answer.
                     </p>
-                    <p>
-                        To help you keep track of which letters are/aren't in the answer, you may tap on the letters
-                        in your guess. Tap once if you think the letter isn't in the answer, twice if you think
-                        it is in the answer, and thrice if you think it's in the right place. Tap the letter once
-                        again if you are still unsure.
-                    </p>
+                    <br/>
                     <img src={tutorialTapLetters}  alt={"tapped letters guess"} />
+                    <p>
+                        Can you change the colors of the letters to keep track of which letters you
+                        think are/aren't in the answer? Yes! Just tap on the letters in your guess until
+                        it is the color you want.
+                    </p>
                 </div>
             </GameModal>
         )

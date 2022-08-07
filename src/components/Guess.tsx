@@ -25,8 +25,8 @@ class Guess extends Component<GuessProps> {
 
     render() {
         // Give feedback to user if the guess was submitted
-        let rightLetters: any = <span>•</span>;
-        let wrongLetters: any = <span>•</span>;
+        let rightLetters: any = <span/>;
+        let wrongLetters: any = <span/>;
         if (this.props.submitted) {
             rightLetters = <span>{this.props.guessFeedback[0]}</span>;
             wrongLetters = <span>{this.props.guessFeedback[1]}</span>;
@@ -61,10 +61,10 @@ class Guess extends Component<GuessProps> {
             <div className="guess">
                 {letters}
                 <div className="tile-spacer" />
-                <div className={`tile ${this.props.submitted ? "tile-green" : "tile-light-border"}`}>
+                <div className={`tile ${this.props.submitted ? "tile-green" : "tile-light-border tile-light-gray"}`}>
                     <div>{rightLetters}</div>
                 </div>
-                <div className={`tile ${this.props.submitted ? "tile-yellow" : "tile-light-border"}`}>
+                <div className={`tile ${this.props.submitted ? "tile-yellow" : "tile-light-border tile-light-gray"}`}>
                     <div>{wrongLetters}</div>
                 </div>
             </div>

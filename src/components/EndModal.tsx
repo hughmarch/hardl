@@ -51,6 +51,9 @@ class EndModal extends Component<EndModalProps> {
                     )}
 
                     <h1>{this.props.solution.toUpperCase()}</h1>
+
+                    <p>{this.props.won ? "Play" : "Try"} again tomorrow!</p>
+
                     <div className={"button-bar"}>
                         <button onClick={this.share}>Share</button>
                         <div className={"end-modal-links"}>
