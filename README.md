@@ -4,7 +4,9 @@ A harder version of the popular game Wordle inspired by Mastermind. Instead of r
 the guess, HARDL only tells you how many guessed letters are in the answer. This project was made using
 [React](https://reactjs.org) with TypeScript.
 
-<img src="screenshot.png" style="max-width: 400px; width: 90%; display: block; margin: 0 auto">
+<p align="center">
+  <img src="screenshot.png" style="max-width: 100px; width: 40%" alt="screenshot">
+</p>
 
 ## Installing and Running the Project
 
