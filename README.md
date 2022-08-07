@@ -15,3 +15,7 @@ the repository and run the command `npm start` inside the repository directory. 
 and the app should start running on your own computer at localhost:3000.
 
 This project was inspired by the game [Wordle](https://www.nytimes.com/games/wordle/index.html) by Josh Wardle.
+
+## License
+
+HARDL is licensed under the [GNU General Public License v3.0](https://github.com/hughmarch/hardl/blob/master/LICENSE.md).
