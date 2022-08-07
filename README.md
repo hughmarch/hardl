@@ -1,8 +1,10 @@
-# Hardle
+# HARDL
 
-A harder version of the popular game Wordle. Instead of revealing whether a letter is in the answer for each letter in
-the guess, Hardle only tells you how many guessed letters are in the answer. This project was made using
+A harder version of the popular game Wordle inspired by Mastermind. Instead of revealing whether a letter is in the answer for each letter in
+the guess, HARDL only tells you how many guessed letters are in the answer. This project was made using
 [React](https://reactjs.org) with TypeScript.
+
+![](screenshot.png)
 
 ## Installing and Running the Project
 
