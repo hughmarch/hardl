@@ -66,6 +66,12 @@ export interface Game {
     changeLetterColor: (guess: number, pos: number) => void;
 }
 
+interface LetterInfo {
+    known: boolean;
+    letterCount: number;
+    correctPositions: number[];
+}
+
 /**
  * A model that keeps track of all game logic.
  * @param day which day's game to play. The state of the game persists if the same
@@ -92,15 +98,15 @@ const useGame = (day: number): Game => {
 
     // Construct an initial state for guessed letter colors by mapping each alphabetical
     // character to [0,0,...,0].
-    const initGuessedLetters: { [key: string]: number[] } = {};
+    const initGuessedLetters: { [key: string]: LetterInfo } = {};
     for (let i = 0; i < 26; i++) {
         let letter: string = String.fromCharCode(97 + i);
-        initGuessedLetters[letter] = [...emptyColors];
+        initGuessedLetters[letter] = { known: false, letterCount: 0, correctPositions: [] };
     }
 
     // A map of alphabetical characters to how the player thinks they appear in the guess.
     const [guessedLetterColors, setGuessedLetterColors] =
-        useLocalStorage<{ [key: string]: number[] }>("guessedLetterColors", initGuessedLetters);
+        useLocalStorage<{ [key: string]: LetterInfo }>("guessedLetterColors", initGuessedLetters);
 
     // If a different day's game is being played, reset all persistent game states.
     useEffect(() => {
@@ -166,13 +172,45 @@ const useGame = (day: number): Game => {
         const feedback: number[][] = compareGuess(currentGuess, solution);
         setGuessFeedback([...guessFeedback, [feedback[0].length, feedback[1].length]]);
 
-        const newLetterColors: number[] = [...emptyColors];
-        for (let i = 0; i < newLetterColors.length; i++) {
-            const letter = currentGuess[i];
-            newLetterColors[i] = guessedLetterColors[letter][i];
-        }
+        const newLetterColors = getColorsForGuess(currentGuess);
 
         setLetterColors([...letterColors, newLetterColors]);
+    }
+
+    /**
+     * Returns how a guess should be colored based on the player's assumptions.
+     */
+    const getColorsForGuess = (guess: string): number[] => {
+        const res: number[] = [...emptyColors];
+
+        // Occurrences of letters in the guess so far
+        const lettersCount: { [letter: string]: number} = {};
+
+        for (let i = 0; i < guess.length; i++) {
+            const letter = guess[i];
+            const currentLetterCount = lettersCount[letter] || 0;
+
+            if (guessedLetterColors[letter].correctPositions.includes(i)) {
+                res[i] = 3;
+                lettersCount[letter] = currentLetterCount + 1;
+            }
+        }
+
+        for (let i = 0; i < guess.length; i++) {
+            const letter = guess[i];
+            const currentLetterCount = lettersCount[letter] || 0;
+
+            if (guessedLetterColors[letter].known && res[i] !== 3) {
+                if (currentLetterCount < guessedLetterColors[letter].letterCount) {
+                    res[i] = 2;
+                    lettersCount[letter] = currentLetterCount + 1;
+                } else {
+                    res[i] = 1;
+                }
+            }
+        }
+
+        return res;
     }
 
     const revealFeedback = (guesses: string[]) => {
@@ -197,28 +235,50 @@ const useGame = (day: number): Game => {
     }
 
     const changeLetterColor = (guess: number, pos: number): void => {
+
+        // If the letter is unknown, change all occurrences of that letter to gray.
+        // If a letter is gray, add 1 to the letter count for that letter.
+        // If a letter is yellow, mark the column as green for that letter.
+        // If a letter is green, unmark the column as green and subtract 1 from the letter count for that letter. If
+        // the letter count is 1 (now 0), mark the letter as unknown.
+
         if (gameState !== GameState.PLAYING) return;
 
         const letter = submittedGuesses[guess][pos];
+        const color = letterColors[guess][pos];
 
         const newGuessedLetterColors = {...guessedLetterColors};
 
-        newGuessedLetterColors[letter][pos] += 1;
-        newGuessedLetterColors[letter][pos] %= 4;
-
-        if (newGuessedLetterColors[letter][pos] !== 3) {
-            for (let i = 0; i < newGuessedLetterColors[letter].length; i++) {
-                newGuessedLetterColors[letter][i] = newGuessedLetterColors[letter][pos];
-            }
+        // Update known status, letter counts, and correct positions
+        switch (color) {
+            case 0:
+                newGuessedLetterColors[letter].known = true;
+                break;
+            case 1:
+                newGuessedLetterColors[letter].letterCount++;
+                break;
+            case 2:
+                newGuessedLetterColors[letter].correctPositions.push(pos);
+                if (newGuessedLetterColors[letter].correctPositions.length > newGuessedLetterColors[letter].letterCount) {
+                    newGuessedLetterColors[letter].letterCount = newGuessedLetterColors[letter].correctPositions.length;
+                }
+                break;
+            case 3:
+                const i = newGuessedLetterColors[letter].correctPositions.indexOf(pos);
+                newGuessedLetterColors[letter].correctPositions.splice(i, 1);
+                newGuessedLetterColors[letter].letterCount--;
+                if (newGuessedLetterColors[letter].letterCount === 0) {
+                    newGuessedLetterColors[letter].known = false;
+                }
+                break;
+            default:
+                break;
         }
 
-        const newLetterColors = [...letterColors];
-
-        for (let i = 0; i < letterColors.length; i++) {
-            for (let j = 0; j < letterColors[0].length; j++) {
-                const currentLetter = submittedGuesses[i][j];
-                newLetterColors[i][j] = guessedLetterColors[currentLetter][j];
-            }
+        // Update letter colors on game board
+        const newLetterColors: number[][] = [];
+        for (const guess of submittedGuesses) {
+            newLetterColors.push(getColorsForGuess(guess));
         }
 
         ReactDOM.unstable_batchedUpdates(() => {
