@@ -3,6 +3,7 @@ import GameModal from "./GameModal";
 import {NUM_GUESSES, SHARE_LETTERS} from "../Constants";
 import githubIcon from "../images/github.png";
 import linkedinIcon from "../images/linkedin.png";
+import {isMobile} from 'react-device-detect';
 
 interface EndModalProps {
     open: boolean;                      // Whether the tutorial modal is visible
@@ -33,7 +34,12 @@ class EndModal extends Component<EndModalProps> {
 
     share = () => {
         const shareText = this.getShareText();
-        navigator.clipboard.writeText(shareText).then(() => alert("Copied to clipboard!"));
+        if (isMobile) {
+            navigator.share({text: shareText});
+        } else {
+            navigator.clipboard.writeText(shareText).then(() => alert("Copied to clipboard!"));
+        }
+
     }
 
     render() {
