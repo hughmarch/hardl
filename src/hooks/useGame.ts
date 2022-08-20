@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import GameState from "../GameState";
 import {ALL, ANSWERS} from "../WordList";
 import {NUM_GUESSES} from "../Constants";
@@ -89,20 +89,34 @@ const useGame = (day: number): Game => {
 
     const [currentGuess, setCurrentGuess] = useState<string>("");
 
-    const solution = ANSWERS[day % ANSWERS.length];
+    const solution = useMemo(() => ANSWERS[day % ANSWERS.length], [day]);
 
-    const emptyColors: number[] = [];
-    for (let i = 0; i < solution.length; i++) {
-        emptyColors.push(0);
-    }
+    const emptyColors = useMemo(() => {
+        const res: number[] = [];
+        for (let i = 0; i < solution.length; i++) {
+            res.push(0);
+        }
+        return res;
+    }, [solution]);
+
+    const grayColors = useMemo(() => {
+        const res: number[] = [];
+        for (let i = 0; i < solution.length; i++) {
+            res.push(1);
+        }
+        return res;
+    }, [solution]);
 
     // Construct an initial state for guessed letter colors by mapping each alphabetical
-    // character to [0,0,...,0].
-    const initGuessedLetters: { [key: string]: LetterInfo } = {};
-    for (let i = 0; i < 26; i++) {
-        let letter: string = String.fromCharCode(97 + i);
-        initGuessedLetters[letter] = { known: false, letterCount: 0, correctPositions: [] };
-    }
+    // character to the default (unknown) colors.
+    const initGuessedLetters = useMemo(() => {
+        const res: { [key: string]: LetterInfo } = {};
+        for (let i = 0; i < 26; i++) {
+            let letter: string = String.fromCharCode(97 + i);
+            res[letter] = { known: false, letterCount: 0, correctPositions: [] };
+        }
+        return res;
+    }, [])
 
     // A map of alphabetical characters to how the player thinks they appear in the guess.
     const [guessedLetterColors, setGuessedLetterColors] =
@@ -121,7 +135,8 @@ const useGame = (day: number): Game => {
                 setGuessedLetterColors(initGuessedLetters);
             });
         }
-    }, [day, setGameState, setGuessFeedback, setLetterColors, setSubmittedGuesses, setGuessedLetterColors])
+    }, [day, initGuessedLetters, setGameState, setGuessFeedback,
+        setLetterColors, setSubmittedGuesses, setGuessedLetterColors])
 
     const addLetter = (letter: string): void => {
         if (gameState !== GameState.PLAYING) return;
@@ -137,11 +152,6 @@ const useGame = (day: number): Game => {
         if (currentGuess.length > 0) {
             setCurrentGuess(currentGuess.slice(0, -1));
         }
-    }
-
-    const grayColors: number[] = [];
-    for (let i = 0; i < solution.length; i++) {
-        grayColors.push(1);
     }
 
     const submitGuess = (): void => {
@@ -200,12 +210,14 @@ const useGame = (day: number): Game => {
             const letter = guess[i];
             const currentLetterCount = lettersCount[letter] || 0;
 
-            if (guessedLetterColors[letter].known && res[i] !== 3) {
+            if (res[i] !== 3) {
                 if (currentLetterCount < guessedLetterColors[letter].letterCount) {
                     res[i] = 2;
                     lettersCount[letter] = currentLetterCount + 1;
-                } else {
+                } else if (guessedLetterColors[letter].known) {
                     res[i] = 1;
+                } else {
+                    res[i] = 0;
                 }
             }
         }
@@ -236,8 +248,8 @@ const useGame = (day: number): Game => {
 
     const changeLetterColor = (guess: number, pos: number): void => {
 
-        // If the letter is unknown, change all occurrences of that letter to gray.
-        // If a letter is gray, add 1 to the letter count for that letter.
+        // If the letter is unknown, set known to true.
+        // If a letter is gray, add 1 to the letter count for that letter and set known to false.
         // If a letter is yellow, mark the column as green for that letter.
         // If a letter is green, unmark the column as green and subtract 1 from the letter count for that letter. If
         // the letter count is 1 (now 0), mark the letter as unknown.
@@ -256,6 +268,7 @@ const useGame = (day: number): Game => {
                 break;
             case 1:
                 newGuessedLetterColors[letter].letterCount++;
+                newGuessedLetterColors[letter].known = false;
                 break;
             case 2:
                 newGuessedLetterColors[letter].correctPositions.push(pos);
