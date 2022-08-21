@@ -62,7 +62,7 @@ class Guess extends Component<GuessProps> {
         }
 
         return (
-            <div className="guess">
+            <div className={`guess${this.props.submitted ? " submitted-guess" : ""}`}>
                 {letters}
                 <div className="tile-spacer" />
                 <div className={`tile ${this.props.submitted ? "tile-green" : "tile-light-border tile-light-gray"}`}>

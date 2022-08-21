@@ -196,7 +196,14 @@ header button:active {
   border-color: var(--color-tile-light-border);
 }
 
+@keyframes bounce {
+  0% { transform: scale(1.1); }
+  100% {transform: scale(1); }
+}
+
 .tile-emphasis-border {
+  animation: bounce;
+  animation-duration: 100ms;
   border-color: var(--color-tile-emphasis-border);
 }
 
@@ -216,6 +223,11 @@ header button:active {
   animation-name: invalid-word-animation;
   animation-duration: 500ms;
   background: var(--color-tile-invalid-word);
+}
+
+.submitted-guess {
+  animation: bounce;
+  animation-duration: 100ms;
 }
 
 .guess .tile-green {
