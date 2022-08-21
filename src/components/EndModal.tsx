@@ -34,6 +34,11 @@ class EndModal extends Component<EndModalProps> {
 
     share = () => {
         const shareText = this.getShareText();
+        if (!navigator.share || !navigator.clipboard) {
+            alert("Sharing not enabled");
+            return;
+        }
+
         if (isMobile) {
             navigator.share({text: shareText});
         } else {

@@ -21,6 +21,10 @@ export interface Game {
      */
     numGuesses: number;
     /**
+     * True when a word not in the list is submitted.
+     */
+    invalidWord: boolean;
+    /**
      * A list of submitted guesses.
      */
     submittedGuesses: string[];
@@ -64,6 +68,10 @@ export interface Game {
      * @param pos which letter (0-indexed) in the submitted guess to change.
      */
     changeLetterColor: (guess: number, pos: number) => void;
+    /**
+     * Clears all letter colors that the player has guessed, resets all letter colors to unknown.
+     */
+    clearLetterColors: () => void;
 }
 
 interface LetterInfo {
@@ -88,6 +96,7 @@ const useGame = (day: number): Game => {
         useLocalStorage<number[][]>("guessFeedback", []);
 
     const [currentGuess, setCurrentGuess] = useState<string>("");
+    const [invalidWord, setInvalidWord] = useState<boolean>(false);
 
     const solution = useMemo(() => ANSWERS[day % ANSWERS.length], [day]);
 
@@ -120,7 +129,8 @@ const useGame = (day: number): Game => {
 
     // A map of alphabetical characters to how the player thinks they appear in the guess.
     const [guessedLetterColors, setGuessedLetterColors] =
-        useLocalStorage<{ [key: string]: LetterInfo }>("guessedLetterColors", initGuessedLetters);
+        useLocalStorage<{ [key: string]: LetterInfo }>("guessedLetterColors",
+            JSON.parse(JSON.stringify(initGuessedLetters)));
 
     // If a different day's game is being played, reset all persistent game states.
     useEffect(() => {
@@ -132,7 +142,7 @@ const useGame = (day: number): Game => {
                 setGameState(GameState.PLAYING);
                 setLetterColors([]);
                 setGuessFeedback([]);
-                setGuessedLetterColors(initGuessedLetters);
+                setGuessedLetterColors(JSON.parse(JSON.stringify(initGuessedLetters)));
             });
         }
     }, [day, initGuessedLetters, setGameState, setGuessFeedback,
@@ -159,7 +169,13 @@ const useGame = (day: number): Game => {
 
         if (currentGuess.length !== solution.length) return;
 
-        if (!ALL.has(currentGuess)) return;
+        if (!ALL.has(currentGuess)) {
+            if (!invalidWord) {
+                setInvalidWord(true);
+                setTimeout(() => setInvalidWord(false), 500);
+            }
+            return;
+        }
 
         const newSubmittedGuesses = [...submittedGuesses, currentGuess];
 
@@ -259,7 +275,7 @@ const useGame = (day: number): Game => {
         const letter = submittedGuesses[guess][pos];
         const color = letterColors[guess][pos];
 
-        const newGuessedLetterColors = {...guessedLetterColors};
+        const newGuessedLetterColors = guessedLetterColors;
 
         // Update known status, letter counts, and correct positions
         switch (color) {
@@ -300,11 +316,24 @@ const useGame = (day: number): Game => {
         });
     }
 
+    const clearLetterColors = () => {
+        // Update letter colors on game board
+        const newLetterColors: number[][] = [];
+        for (let i = 0; i < solution.length; i++) {
+            newLetterColors.push([...emptyColors]);
+        }
+
+        ReactDOM.unstable_batchedUpdates(() => {
+            setGuessedLetterColors(JSON.parse(JSON.stringify(initGuessedLetters)));
+            setLetterColors(newLetterColors);
+        });
+    }
+
     const numLetters = solution.length;
     const numGuesses = NUM_GUESSES;
-    return {solution, numLetters, numGuesses, submittedGuesses,
+    return {solution, numLetters, numGuesses, invalidWord, submittedGuesses,
         currentGuess, gameState, letterColors, guessFeedback,
-        addLetter, removeLetter, submitGuess, changeLetterColor};
+        addLetter, removeLetter, submitGuess, changeLetterColor, clearLetterColors};
 }
 
 export default useGame;

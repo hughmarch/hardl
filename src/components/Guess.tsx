@@ -7,6 +7,7 @@ interface GuessProps {
     guess: string;
     submitted: boolean;
     guessFeedback: number[];
+    invalidWord: boolean;
     onLetterClicked(position: number): void;
 }
 
@@ -44,6 +45,9 @@ class Guess extends Component<GuessProps> {
             } else if (i < this.props.guess.length) {
                 letter = this.props.guess[i];
                 border = "tile-emphasis-border";
+            }
+            if (this.props.invalidWord) {
+                border += " tile-invalid-word";
             }
 
             letters.push(

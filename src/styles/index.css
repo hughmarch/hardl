@@ -7,6 +7,8 @@
   --color-tile-light: #f4f4f4;
   --color-tile-light-border: lightgray;
   --color-tile-emphasis-border: gray;
+  --color-tile-invalid-word: #eedddd;
+  --color-tile-invalid-word-border: gray;
   --color-keyboard-key: #cccccc;
   --color-text-default: black;
   --color-text-highlight: white;
@@ -78,6 +80,25 @@ header img:hover,
 header img:focus,
 header img:active {
   top: 12px;
+}
+
+header button {
+  display: block;
+  position: absolute;
+  top: 16px;
+  left: 10px;
+
+  background-color: transparent;
+  border: 2px solid var(--color-text-default);
+  cursor: pointer;
+  color: var(--color-text-default);
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px;
+}
+
+header button:active {
+  top: 18px;
 }
 
 /*
@@ -154,6 +175,24 @@ header img:active {
 
 .tile-emphasis-border {
   border-color: var(--color-tile-emphasis-border);
+}
+
+@keyframes invalid-word-animation {
+  0%   { transform: translate(-4px, 0); }
+  12%  { transform: translate(4px, 0); }
+  25%  { transform: translate(-4px, 0); }
+  37%  { transform: translate(4px, 0); }
+  50%   { transform: translate(-4px, 0); }
+  62%  { transform: translate(4px, 0); }
+  75%  { transform: translate(-4px, 0); }
+  87%  { transform: translate(4px, 0); }
+  100% { transform: translate(0, 0); }
+}
+
+.tile-invalid-word {
+  animation-name: invalid-word-animation;
+  animation-duration: 500ms;
+  background: var(--color-tile-invalid-word);
 }
 
 .guess .tile-green {

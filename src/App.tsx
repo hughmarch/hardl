@@ -85,7 +85,10 @@ function App() {
 
     return (
         <div className="app-container" tabIndex={0}>
-            <Header     setTutorial={setTutorial} />
+            <Header     setTutorial={setTutorial}
+                        letterColors={game.letterColors}
+                        gameState={game.gameState}
+                        onClear={game.clearLetterColors}/>
             <TutorialModal open={tutorial} setOpen={setTutorial} />
             <EndModal   open={end}
                         setOpen={setEnd}
@@ -97,7 +100,7 @@ function App() {
             <GameBoard  submittedGuesses={game.submittedGuesses}   currentGuess={game.currentGuess}
                         numLetters={game.numLetters}               numGuesses={game.numGuesses}
                         letterColors={game.letterColors}           guessFeedback={game.guessFeedback}
-                        onLetterClicked={game.changeLetterColor} />
+                        onLetterClicked={game.changeLetterColor}   invalidWord={game.invalidWord} />
 
             <Keyboard   onBackKeyPressed={game.removeLetter}       onKeyPressed={game.addLetter}
                         onSubmitKeyPressed={game.submitGuess}      letterColors={game.letterColors}

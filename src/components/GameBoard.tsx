@@ -8,6 +8,7 @@ interface GameBoardProps {
     numGuesses: number;
     letterColors: number[][];
     guessFeedback: number[][];
+    invalidWord: boolean;
     onLetterClicked(guess: number, position: number): void;
 }
 
@@ -24,6 +25,7 @@ class GameBoard extends Component<GameBoardProps> {
             let guess = "";
             let letterColors: number[] = [];
             let guessFeedback: number[] = [];
+            let invalidWord = false;
             if (i < this.props.submittedGuesses.length) {
                 // This guess has been submitted, provide feedback on it.
                 guess = this.props.submittedGuesses[i];
@@ -33,6 +35,7 @@ class GameBoard extends Component<GameBoardProps> {
             } else if (i === this.props.submittedGuesses.length) {
                 // The player is currently guessing this one
                 guess = this.props.currentGuess;
+                invalidWord = this.props.invalidWord;
             }
 
             guesses.push(
@@ -40,7 +43,8 @@ class GameBoard extends Component<GameBoardProps> {
                        submitted={submitted}                key={i}
                        onLetterClicked={pos => this.props.onLetterClicked(i, pos)}
                        letterColors={letterColors}
-                       guessFeedback={guessFeedback} />
+                       guessFeedback={guessFeedback}
+                       invalidWord={invalidWord} />
             )
         }
 
