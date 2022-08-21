@@ -8,6 +8,7 @@ import GameState from "./GameState";
 import EndModal from "./components/EndModal";
 import {getStorageValue, setStorageValue} from "./storage";
 import {START_DATE} from "./Constants";
+import SettingsModal from "./components/SettingsModal";
 
 const date = new Date();
 const time = date.getTime() - START_DATE.getTime();
@@ -17,6 +18,7 @@ function App() {
     const game: Game = useGame(day);
     const [tutorial, setTutorial] = useState<boolean>(false);
     const [end, setEnd] = useState<boolean>(false);
+    const [settings, setSettings] = useState<boolean>(false);
 
     useEffect(() => {
         if (!tutorial && !getStorageValue<boolean>("visited", false)) {
@@ -88,8 +90,13 @@ function App() {
             <Header     setTutorial={setTutorial}
                         letterColors={game.letterColors}
                         gameState={game.gameState}
-                        onClear={game.clearLetterColors}/>
+                        onClear={game.clearLetterColors}
+                        setSettings={setSettings} />
+
             <TutorialModal open={tutorial} setOpen={setTutorial} />
+
+            <SettingsModal open={settings} setOpen={setSettings} />
+
             <EndModal   open={end}
                         setOpen={setEnd}
                         won={game.gameState === GameState.WON}

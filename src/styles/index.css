@@ -66,20 +66,24 @@ header h1 {
   margin-bottom: 16px;
 }
 
-header img {
-  max-width: 36px;
-  display: block;
+.menubar {
   position: absolute;
   top: 10px;
   right: 10px;
-  padding: 10px;
+  display: flex;
+}
+
+header img {
+  max-width: 36px;
+  display: block;
+  padding: 10px 5px;
   cursor: pointer;
 }
 
 header img:hover,
 header img:focus,
 header img:active {
-  top: 12px;
+  transform: translate(0, 2px);
 }
 
 header button {
@@ -93,12 +97,31 @@ header button {
   cursor: pointer;
   color: var(--color-text-default);
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 700;
   padding: 10px;
 }
 
+header button:hover,
+header button:focus,
 header button:active {
   top: 18px;
+}
+
+@media(max-width: 330px) {
+  header h1 {
+    font-size: 24px;
+  }
+
+  header button {
+    top: 12px;
+    font-size: 14px;
+    padding: 7px;
+  }
+
+  header img {
+    max-width: 30px;
+    padding: 5px 3px;
+  }
 }
 
 /*
@@ -290,8 +313,8 @@ header button:active {
   position: absolute;
   right: 10px;
   top: 10px;
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
   cursor: pointer;
 }
 

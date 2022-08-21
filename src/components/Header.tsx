@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import infoIcon from "../images/info.png";
+import settingsIcon from "../images/settings.png";
 import GameState from "../GameState";
 
 interface HeaderProps {
     setTutorial: (open: boolean) => void;
+    setSettings: (open: boolean) => void;
     letterColors: number[][];
     gameState: GameState;
     onClear: () => void;
@@ -15,6 +17,10 @@ interface HeaderProps {
 class Header extends Component<HeaderProps> {
     showTutorial = () => {
         this.props.setTutorial(true);
+    }
+
+    showSettings = () => {
+        this.props.setSettings(true);
     }
 
     render() {
@@ -33,7 +39,10 @@ class Header extends Component<HeaderProps> {
             <header>
                 {showClearButton && <button onClick={this.props.onClear}>Clear</button>}
                 <h1>Hardl</h1>
-                <img src={infoIcon} alt={"info"} onClick={this.showTutorial}/>
+                <div className={"menubar"}>
+                    <img src={settingsIcon} alt={"settings"} onClick={this.showSettings} />
+                    <img src={infoIcon} alt={"info"} onClick={this.showTutorial}/>
+                </div>
             </header>
         );
     }
