@@ -27,7 +27,7 @@ class GameModal extends Component<GameModalProps> {
                         maxWidth: '500px',
                         margin: '0 auto',
                         background: 'var(--color-background)',
-                        'border-radius': '10px'
+                        borderRadius: '10px'
                     },
 
                     overlay: {

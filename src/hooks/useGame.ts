@@ -138,8 +138,8 @@ const useGame = (day: number): Game => {
         const lastPlayed = getStorageValue<number>("day", 0);
         setStorageValue("day", day);
 
-        const lastVersion = getStorageValue<string>("version", "0");
-        setStorageValue("version", GAME_RULE_VERSION);
+        const lastVersion = getStorageValue<string>("game-rule-version", "0");
+        setStorageValue("game-rule-version", GAME_RULE_VERSION);
         if (day !== lastPlayed || lastVersion !== GAME_RULE_VERSION) {
             ReactDOM.unstable_batchedUpdates(() => {
                 setSubmittedGuesses([]);
