@@ -1,7 +1,7 @@
 import {useEffect, useMemo, useState} from 'react';
 import GameState from "../GameState";
 import {ALL, ANSWERS} from "../WordList";
-import {NUM_GUESSES} from "../Constants";
+import {GAME_RULE_VERSION, NUM_GUESSES} from "../Constants";
 import {compareGuess} from "../compareGuess";
 import ReactDOM from "react-dom";
 import {useLocalStorage} from "./useLocalStorage";
@@ -132,11 +132,15 @@ const useGame = (day: number): Game => {
         useLocalStorage<{ [key: string]: LetterInfo }>("guessedLetterColors",
             JSON.parse(JSON.stringify(initGuessedLetters)));
 
-    // If a different day's game is being played, reset all persistent game states.
+    // If a different day's game is being played, or a different version of the game rules is
+    // running, reset all persistent game states.
     useEffect(() => {
         const lastPlayed = getStorageValue<number>("day", 0);
         setStorageValue("day", day);
-        if (day !== lastPlayed) {
+
+        const lastVersion = getStorageValue<string>("version", "0");
+        setStorageValue("version", GAME_RULE_VERSION);
+        if (day !== lastPlayed || lastVersion !== GAME_RULE_VERSION) {
             ReactDOM.unstable_batchedUpdates(() => {
                 setSubmittedGuesses([]);
                 setGameState(GameState.PLAYING);
