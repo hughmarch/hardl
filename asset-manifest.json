@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/hardl/static/css/main.df8c25d6.css",
+    "main.css": "/hardl/static/css/main.e3947cbe.css",
     "main.js": "/hardl/static/js/main.1a1b48f9.js",
     "static/js/787.293fe55c.chunk.js": "/hardl/static/js/787.293fe55c.chunk.js",
     "static/media/linkedin.png": "/hardl/static/media/linkedin.133e4f41ec1503268e13.png",
@@ -8,12 +8,12 @@
     "static/media/tutorial-no-letters.png": "/hardl/static/media/tutorial-no-letters.4c8adcb274255e363c2e.png",
     "static/media/tutorial-some-letters.png": "/hardl/static/media/tutorial-some-letters.c9a9869d303cc5b813cd.png",
     "index.html": "/hardl/index.html",
-    "main.df8c25d6.css.map": "/hardl/static/css/main.df8c25d6.css.map",
+    "main.e3947cbe.css.map": "/hardl/static/css/main.e3947cbe.css.map",
     "main.1a1b48f9.js.map": "/hardl/static/js/main.1a1b48f9.js.map",
     "787.293fe55c.chunk.js.map": "/hardl/static/js/787.293fe55c.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.df8c25d6.css",
+    "static/css/main.e3947cbe.css",
     "static/js/main.1a1b48f9.js"
   ]
 }
