@@ -99,6 +99,12 @@ header h1 {
   display: flex;
 }
 
+.share-icon {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
 header img {
   max-width: 36px;
   display: block;

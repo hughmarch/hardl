@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import infoIcon from "../images/info.png";
 import settingsIcon from "../images/settings.png";
+import shareIcon from "../images/share.png";
 import GameState from "../GameState";
 
 interface HeaderProps {
     setTutorial: (open: boolean) => void;
     setSettings: (open: boolean) => void;
+    setEnd: (open: boolean) => void;
     letterColors: number[][];
     gameState: GameState;
     onClear: () => void;
@@ -23,6 +25,10 @@ class Header extends Component<HeaderProps> {
         this.props.setSettings(true);
     }
 
+    showEnd = () => {
+        this.props.setEnd(true);
+    }
+
     render() {
         let showClearButton = false;
         if (this.props.gameState === GameState.PLAYING) {
@@ -38,6 +44,8 @@ class Header extends Component<HeaderProps> {
         return (
             <header>
                 {showClearButton && <button onClick={this.props.onClear}>Clear</button>}
+                {this.props.gameState !== GameState.PLAYING &&
+                    <img src={shareIcon} alt={"share"} onClick={this.showEnd} className={"share-icon"} />}
                 <h1>Hardl</h1>
                 <div className={"menubar"}>
                     <img src={settingsIcon} alt={"settings"} onClick={this.showSettings} />

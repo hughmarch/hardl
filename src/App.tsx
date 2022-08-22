@@ -103,7 +103,8 @@ function App() {
                         letterColors={game.letterColors}
                         gameState={game.gameState}
                         onClear={game.clearLetterColors}
-                        setSettings={setSettingsModal} />
+                        setSettings={setSettingsModal}
+                        setEnd={setEnd} />
 
             <TutorialModal open={tutorial} setOpen={setTutorial} />
 
