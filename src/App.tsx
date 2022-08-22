@@ -10,6 +10,10 @@ import {getStorageValue, setStorageValue} from "./storage";
 import {START_DATE} from "./Constants";
 import SettingsModal, {Settings} from "./components/SettingsModal";
 import {useLocalStorage} from "./hooks/useLocalStorage";
+import ReactGA from 'react-ga';
+
+const TRACKING_ID = "G-E61RJ18FS5"; // OUR_TRACKING_ID
+ReactGA.initialize(TRACKING_ID);
 
 const date = new Date();
 const time = date.getTime() - START_DATE.getTime();
