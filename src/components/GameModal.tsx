@@ -20,11 +20,18 @@ class GameModal extends Component<GameModalProps> {
                 isOpen={this.props.open}
                 contentLabel={"game modal"}
                 appElement={document.getElementById('root')}
+                onRequestClose={() => this.props.setOpen(false)}
                 closeTimeoutMS={200}
                 style={{
                     content: {
                         maxWidth: '500px',
-                        margin: '0 auto'
+                        margin: '0 auto',
+                        background: 'var(--color-background)',
+                        'border-radius': '10px'
+                    },
+
+                    overlay: {
+                        background: 'var(--color-overlay)'
                     }
                 }}
             >

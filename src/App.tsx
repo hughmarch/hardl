@@ -8,7 +8,8 @@ import GameState from "./GameState";
 import EndModal from "./components/EndModal";
 import {getStorageValue, setStorageValue} from "./storage";
 import {START_DATE} from "./Constants";
-import SettingsModal from "./components/SettingsModal";
+import SettingsModal, {Settings} from "./components/SettingsModal";
+import {useLocalStorage} from "./hooks/useLocalStorage";
 
 const date = new Date();
 const time = date.getTime() - START_DATE.getTime();
@@ -18,7 +19,9 @@ function App() {
     const game: Game = useGame(day);
     const [tutorial, setTutorial] = useState<boolean>(false);
     const [end, setEnd] = useState<boolean>(false);
-    const [settings, setSettings] = useState<boolean>(false);
+    const [settingsModal, setSettingsModal] = useState<boolean>(false);
+    const [settings, setSettings] = useLocalStorage<Settings>("settings",
+        {darkMode: false, highContrast: false});
 
     useEffect(() => {
         if (!tutorial && !getStorageValue<boolean>("visited", false)) {
@@ -85,17 +88,25 @@ function App() {
         }
     }, [game.gameState])
 
+    useEffect(() => {
+        document.documentElement.setAttribute("darkMode", "" + settings.darkMode);
+        document.documentElement.setAttribute("highContrast", "" + settings.highContrast);
+    }, [settings])
+
     return (
-        <div className="app-container" tabIndex={0}>
+        <div className="app-container" tabIndex={0} >
             <Header     setTutorial={setTutorial}
                         letterColors={game.letterColors}
                         gameState={game.gameState}
                         onClear={game.clearLetterColors}
-                        setSettings={setSettings} />
+                        setSettings={setSettingsModal} />
 
             <TutorialModal open={tutorial} setOpen={setTutorial} />
 
-            <SettingsModal open={settings} setOpen={setSettings} />
+            <SettingsModal  open={settingsModal}
+                            setOpen={setSettingsModal}
+                            settings={settings}
+                            setSettings={setSettings} />
 
             <EndModal   open={end}
                         setOpen={setEnd}

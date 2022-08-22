@@ -10,8 +10,33 @@
   --color-tile-invalid-word: #eedddd;
   --color-tile-invalid-word-border: gray;
   --color-keyboard-key: #cccccc;
+  --color-keyboard-text: black;
   --color-text-default: black;
-  --color-text-highlight: white;
+  --color-tile-text: white;
+  --color-overlay: #ffffff88;
+  --invert-icons: 0;
+}
+
+[darkMode="true"] {
+  --color-background: #0a0a0a;
+  --color-tile-light: #141414;
+  --color-tile-light-border: #2f2f2f;
+  --color-tile-emphasis-border: #555555;
+  --color-incorrect: #555a5c;
+  --color-unknown: #909090;
+  --color-tile-invalid-word: #441111;
+  --color-tile-invalid-word-border: #555555;
+  --color-keyboard-key: #b0b0b0;
+  --color-keyboard-text: black;
+  --color-text-default: #e3e3e3;
+  --color-tile-text: white;
+  --color-overlay: #00000088;
+  --invert-icons: 1;
+}
+
+[highContrast="true"] {
+  --color-correct: #1E88E5;
+  --color-contains: #FFC107;
 }
 
 body {
@@ -23,6 +48,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
   color: var(--color-text-default);
+  background: var(--color-background);
 }
 
 h1, h2 {
@@ -78,6 +104,7 @@ header img {
   display: block;
   padding: 10px 5px;
   cursor: pointer;
+  filter: invert(var(--invert-icons));
 }
 
 header img:hover,
@@ -196,14 +223,7 @@ header button:active {
   border-color: var(--color-tile-light-border);
 }
 
-@keyframes bounce {
-  0% { transform: scale(1.1); }
-  100% {transform: scale(1); }
-}
-
 .tile-emphasis-border {
-  animation: bounce;
-  animation-duration: 100ms;
   border-color: var(--color-tile-emphasis-border);
 }
 
@@ -221,37 +241,36 @@ header button:active {
 
 .tile-invalid-word {
   animation-name: invalid-word-animation;
-  animation-duration: 500ms;
+  animation-duration: 450ms;
   background: var(--color-tile-invalid-word);
 }
 
-.submitted-guess {
-  animation: bounce;
-  animation-duration: 100ms;
+.guess .tile-submitted-letter {
+  cursor: pointer;
 }
 
 .guess .tile-green {
   background-color: var(--color-correct);
   border-color: var(--color-correct);
-  color: var(--color-text-highlight);
+  color: var(--color-tile-text);
 }
 
 .guess .tile-yellow {
   background-color: var(--color-contains);
   border-color: var(--color-contains);
-  color: var(--color-text-highlight);
+  color: var(--color-tile-text);
 }
 
 .guess .tile-gray {
   background-color: var(--color-unknown);
   border-color: var(--color-unknown);
-  color: var(--color-text-highlight);
+  color: var(--color-tile-text);
 }
 
 .guess .tile-dark-gray {
   background-color: var(--color-incorrect);
   border-color: var(--color-incorrect);
-  color: var(--color-text-highlight);
+  color: var(--color-tile-text);
 }
 
 /*
@@ -278,7 +297,7 @@ header button:active {
   padding: 0;
   flex: 1;
   border: none;
-  color: var(--color-text-default);
+  color: var(--color-keyboard-text);
   background-color: var(--color-keyboard-key);
   text-transform: uppercase;
   font-weight: 600;
@@ -328,6 +347,7 @@ header button:active {
   width: 36px;
   height: 36px;
   cursor: pointer;
+  filter: invert(var(--invert-icons));
 }
 
 .ReactModal__Overlay {
@@ -346,6 +366,12 @@ header button:active {
 /*
  ------------------------------------ TutorialModal ------------------------------------
  */
+
+.tutorial-modal-content h2 {
+  border-bottom: 1px solid var(--color-tile-light-border);
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+}
 
 .tutorial-modal-content img {
   width: 80%;
@@ -399,6 +425,7 @@ header button:active {
   max-width: 48px;
   padding: 5px;
   cursor: pointer;
+  filter: invert(var(--invert-icons));
 }
 
 .end-modal-content img:hover,
@@ -428,4 +455,30 @@ header button:active {
   .button-bar {
     flex-direction: column;
   }
+}
+
+/*
+ ------------------------------------ SettingsModal ------------------------------------
+ */
+
+.settings-modal-content {
+  padding-top: 10%;
+}
+
+.settings-modal-content h2 {
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-tile-light-border);
+  margin-bottom: 26px;
+}
+
+.setting {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  margin: 50px auto;
+}
+
+.setting h4, .setting p {
+  margin: 0 0 4px;
 }

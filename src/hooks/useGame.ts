@@ -191,6 +191,10 @@ const useGame = (day: number): Game => {
                 setGameState(GameState.LOST);
                 revealFeedback(newSubmittedGuesses);
             }
+
+            if (invalidWord) {
+                setInvalidWord(false);
+            }
         });
     }
 

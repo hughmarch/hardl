@@ -41,7 +41,7 @@ class Guess extends Component<GuessProps> {
             let border = "tile-light-border";
             if (this.props.submitted) {
                 letter = this.props.guess[i];
-                border = DISPLAY_LETTERS[this.props.letterColors[i]];
+                border = DISPLAY_LETTERS[this.props.letterColors[i]] + " tile-submitted-letter";
             } else if (i < this.props.guess.length) {
                 letter = this.props.guess[i];
                 border = "tile-emphasis-border";
@@ -62,7 +62,7 @@ class Guess extends Component<GuessProps> {
         }
 
         return (
-            <div className={`guess${this.props.submitted ? " submitted-guess" : ""}`}>
+            <div className={`guess`}>
                 {letters}
                 <div className="tile-spacer" />
                 <div className={`tile ${this.props.submitted ? "tile-green" : "tile-light-border tile-light-gray"}`}>
