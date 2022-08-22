@@ -327,7 +327,7 @@ const useGame = (day: number): Game => {
     const clearLetterColors = () => {
         // Update letter colors on game board
         const newLetterColors: number[][] = [];
-        for (let i = 0; i < solution.length; i++) {
+        for (let i = 0; i < submittedGuesses.length; i++) {
             newLetterColors.push([...emptyColors]);
         }
 
