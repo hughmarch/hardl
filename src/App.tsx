@@ -14,6 +14,7 @@ import ReactGA from 'react-ga';
 
 const TRACKING_ID = "G-E61RJ18FS5"; // OUR_TRACKING_ID
 ReactGA.initialize(TRACKING_ID);
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 const date = new Date();
 const time = date.getTime() - START_DATE.getTime();
