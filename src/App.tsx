@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Header from "./components/Header";
 import GameBoard from "./components/GameBoard";
 import Keyboard from "./components/Keyboard";
@@ -10,11 +10,10 @@ import {getStorageValue, setStorageValue} from "./storage";
 import {START_DATE} from "./Constants";
 import SettingsModal, {Settings} from "./components/SettingsModal";
 import {useLocalStorage} from "./hooks/useLocalStorage";
-import ReactGA from 'react-ga';
+import ReactGA, {EventArgs} from 'react-ga';
 
-const TRACKING_ID = "G-E61RJ18FS5"; // OUR_TRACKING_ID
+const TRACKING_ID = "UA-238166078-1"; // OUR_TRACKING_ID
 ReactGA.initialize(TRACKING_ID);
-ReactGA.pageview(window.location.pathname + window.location.search);
 
 const date = new Date();
 const time = date.getTime() - START_DATE.getTime();
@@ -28,6 +27,14 @@ function App() {
     const [settings, setSettings] = useLocalStorage<Settings>("settings",
         {darkMode: false, highContrast: false});
 
+    const prevGameState = useRef<GameState>(game.gameState);
+
+    // Set up Google Analytics for this page
+    useEffect(() => {
+        ReactGA.pageview(window.location.pathname);
+    }, [])
+
+    // Show the tutorial screen if this is the first time visiting the site
     useEffect(() => {
         if (!tutorial && !getStorageValue<boolean>("visited", false)) {
             setStorageValue("visited", true);
@@ -35,6 +42,8 @@ function App() {
         }
     }, [tutorial])
 
+    // Adjust the app height to visible screen height (fixes floating navbar problem on mobile
+    // browsers)
     useEffect(() => {
         const appHeight = () => {
             const doc = document.documentElement
@@ -49,6 +58,7 @@ function App() {
         }
     }, [])
 
+    // Handle keyboard events for the game
     useEffect(() => {
         const removeLetter = game.removeLetter;
         const addLetter = game.addLetter;
@@ -76,6 +86,7 @@ function App() {
         }
     }, [game.removeLetter, game.addLetter, game.submitGuess])
 
+    // Show the end screen if the game is over
     useEffect(() => {
         let timeout: ReturnType<typeof setTimeout> | null = null;
         if (game.gameState === GameState.LOST || game.gameState === GameState.WON) {
@@ -86,6 +97,19 @@ function App() {
             setEnd(false);
         }
 
+        if (prevGameState.current === GameState.PLAYING && game.gameState === GameState.WON) {
+            prevGameState.current = game.gameState;
+            let args: EventArgs = {
+                category: "Game",
+                action: "Complete",
+                label: GameState[game.gameState],
+            };
+            if (game.gameState === GameState.WON) {
+                args.value = game.submittedGuesses.length;
+            }
+            ReactGA.event(args);
+        }
+
         return () => {
             if (timeout !== null) {
                 clearTimeout(timeout);
@@ -93,6 +117,7 @@ function App() {
         }
     }, [game.gameState])
 
+    // Apply settings
     useEffect(() => {
         document.documentElement.setAttribute("darkMode", "" + settings.darkMode);
         document.documentElement.setAttribute("highContrast", "" + settings.highContrast);

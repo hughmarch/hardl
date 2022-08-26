@@ -4,6 +4,7 @@ import {NUM_GUESSES, SHARE_LETTERS} from "../Constants";
 import githubIcon from "../images/github.png";
 import linkedinIcon from "../images/linkedin.png";
 import {isMobile} from 'react-device-detect';
+import ReactGA from "react-ga";
 
 interface EndModalProps {
     open: boolean;                      // Whether the tutorial modal is visible
@@ -29,17 +30,23 @@ class EndModal extends Component<EndModalProps> {
             }
         }
 
+        res += "\n\nhardl.net";
+
         return res;
     }
 
     share = () => {
         const shareText = this.getShareText();
         if (isMobile && navigator.share) {
-            navigator.share({text: shareText});
+            navigator.share({text: shareText}).then(() => {
+                ReactGA.event({category: "Button", action: "Share", label: "Success"});
+            });
         } else if (navigator.clipboard) {
             navigator.clipboard.writeText(shareText).then(() => alert("Copied to clipboard!"));
+            ReactGA.event({category: "Button", action: "Share", label: "Success"});
         } else {
             alert("Sharing not enabled");
+            ReactGA.event({category: "Button", action: "Share", label: "Failure"});
         }
     }
 
