@@ -97,7 +97,7 @@ function App() {
             setEnd(false);
         }
 
-        if (prevGameState.current === GameState.PLAYING && game.gameState === GameState.WON) {
+        if (prevGameState.current === GameState.PLAYING && game.gameState !== GameState.PLAYING) {
             prevGameState.current = game.gameState;
             let args: EventArgs = {
                 category: "Game",
