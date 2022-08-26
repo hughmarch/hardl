@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.7e97b1eb.css",
-    "main.js": "/static/js/main.4704bd36.js",
+    "main.js": "/static/js/main.377e4520.js",
     "static/js/787.293fe55c.chunk.js": "/static/js/787.293fe55c.chunk.js",
     "static/media/linkedin.png": "/static/media/linkedin.133e4f41ec1503268e13.png",
     "static/media/tutorial-tap-letters.png": "/static/media/tutorial-tap-letters.54f58a983c20e457abf4.png",
@@ -9,11 +9,11 @@
     "static/media/tutorial-some-letters.png": "/static/media/tutorial-some-letters.c9a9869d303cc5b813cd.png",
     "index.html": "/index.html",
     "main.7e97b1eb.css.map": "/static/css/main.7e97b1eb.css.map",
-    "main.4704bd36.js.map": "/static/js/main.4704bd36.js.map",
+    "main.377e4520.js.map": "/static/js/main.377e4520.js.map",
     "787.293fe55c.chunk.js.map": "/static/js/787.293fe55c.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.7e97b1eb.css",
-    "static/js/main.4704bd36.js"
+    "static/js/main.377e4520.js"
   ]
 }
