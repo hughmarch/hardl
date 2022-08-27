@@ -100,8 +100,8 @@ function App() {
         if (prevGameState.current === GameState.PLAYING && game.gameState !== GameState.PLAYING) {
             prevGameState.current = game.gameState;
             let args: EventArgs = {
-                category: "Game",
-                action: "Complete",
+                category: "Complete",
+                action: game.solution,
                 label: GameState[game.gameState],
             };
             if (game.gameState === GameState.WON) {
